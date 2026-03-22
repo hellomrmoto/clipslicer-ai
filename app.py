@@ -11,6 +11,10 @@ video_jobs = {}
 def home():
     return render_template("index.html")
 
+@app.route('/property')
+def property_page():
+    return render_template("property.html")
+
 @app.route('/upload', methods=['POST'])
 def upload():
     data = request.get_json()

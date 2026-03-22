@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>123 Oakwood Drive – Discover Your Dream Home</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #c9a84c;
+      --dark: #0d0d0d;
+      --charcoal: #1a1a1a;
+      --light: #f5f0e8;
+      --muted: #888;
+      --white: #ffffff;
+      --font-serif: Georgia, 'Times New Roman', serif;
+      --font-sans: 'Segoe UI', Helvetica, Arial, sans-serif;
+      --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--white);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2.5rem;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+    }
+    .nav-logo {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-left: 2rem;
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.65) 100%),
+        url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=1920&q=80') center/cover no-repeat;
+      transform: scale(1.04);
+      animation: heroZoom 14s ease-out forwards;
+    }
+    @keyframes heroZoom {
+      from { transform: scale(1.04); }
+      to   { transform: scale(1.0); }
+    }
+    .hero-content {
+      position: relative;
+      padding: 0 2.5rem 5rem;
+      max-width: 800px;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 0.3rem 0.85rem;
+      margin-bottom: 1.2rem;
+    }
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .hero-subtitle {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.7);
+      letter-spacing: 0.04em;
+      margin-bottom: 2rem;
+    }
+    .hero-price {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 2rem;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat .val {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+    .hero-stat .lbl {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--gold);
+      color: var(--dark);
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.9rem 2rem;
+      transition: opacity var(--transition);
+    }
+    .hero-cta:hover { opacity: 0.85; }
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      right: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: rgba(255,255,255,0.25);
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%, 100% { transform: scaleY(0); transform-origin: top; }
+      50%        { transform: scaleY(1); transform-origin: top; }
+    }
+
+    /* ── SECTION WRAPPER ── */
+    section { padding: 6rem 2.5rem; }
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .section-body {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      max-width: 560px;
+    }
+
+    /* ── EMOTION VIDEO SECTION ── */
+    .emotion-video-section {
+      background: var(--charcoal);
+    }
+    .ev-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .ev-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .ev-form {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .ev-form input[type="text"] {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--white);
+      padding: 0.7rem 1.1rem;
+      font-size: 0.85rem;
+      width: 300px;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .ev-form input[type="text"]:focus { border-color: var(--gold); }
+    .ev-form input[type="text"]::placeholder { color: var(--muted); }
+    .ev-form button {
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      padding: 0.7rem 1.4rem;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity var(--transition);
+    }
+    .ev-form button:hover { opacity: 0.85; }
+    .ev-form button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Status bar */
+    .ev-status {
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      padding: 0.85rem 1.25rem;
+      background: rgba(201,168,76,0.1);
+      border-left: 3px solid var(--gold);
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.75);
+    }
+    .ev-status.visible { display: flex; }
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(201,168,76,0.35);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Clips grid */
+    .clips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .clip-card {
+      position: relative;
+      background: #111;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .clip-card video {
+      width: 100%;
+      aspect-ratio: 16/9;
+      display: block;
+      object-fit: cover;
+    }
+    .clip-card .clip-info {
+      padding: 1rem 1.25rem;
+    }
+    .clip-card .clip-title {
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.25rem;
+    }
+    .clip-card .clip-time {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .clip-placeholder {
+      aspect-ratio: 16/9;
+      background: rgba(255,255,255,0.04);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .clip-placeholder svg { opacity: 0.3; }
+
+    /* Demo clips shown before processing */
+    .demo-notice {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: rgba(255,255,255,0.3);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ── FEATURES ── */
+    .features-section {
+      background: var(--dark);
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      align-items: center;
+    }
+    @media (max-width: 768px) { .features-grid { grid-template-columns: 1fr; } }
+    .features-img {
+      position: relative;
+    }
+    .features-img img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      aspect-ratio: 4/3;
+      filter: brightness(0.85);
+    }
+    .features-img::before {
+      content: '';
+      position: absolute;
+      top: -12px; left: -12px;
+      right: 12px; bottom: 12px;
+      border: 1px solid var(--gold);
+      z-index: -1;
+    }
+    .features-list {
+      list-style: none;
+      margin-top: 2rem;
+    }
+    .features-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.75);
+    }
+    .features-list li::before {
+      content: '';
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.45rem;
+    }
+
+    /* ── GALLERY ── */
+    .gallery-section {
+      background: var(--charcoal);
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+    .gallery-header {
+      max-width: 1200px;
+      margin: 0 auto 2rem;
+    }
+    .gallery-scroll {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 0.75rem;
+    }
+    .gallery-scroll img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.8);
+      transition: filter var(--transition), transform var(--transition);
+    }
+    .gallery-scroll img:hover { filter: brightness(1); transform: scale(1.01); }
+    .gallery-scroll .gi-large {
+      grid-row: span 2;
+      height: 100%;
+    }
+    @media (max-width: 700px) {
+      .gallery-scroll { grid-template-columns: 1fr 1fr; }
+      .gallery-scroll .gi-large { grid-row: auto; height: 240px; }
+    }
+
+    /* ── NEIGHBORHOOD ── */
+    .neighborhood-section { background: var(--dark); }
+    .neighborhood-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    @media (max-width: 768px) { .neighborhood-inner { grid-template-columns: 1fr; gap: 3rem; } }
+    .nb-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .nb-card {
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .nb-card .icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+    }
+    .nb-card .nb-name {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.2rem;
+    }
+    .nb-card .nb-dist {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    /* ── REALTOR ── */
+    .realtor-section {
+      background: var(--charcoal);
+    }
+    .realtor-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+    @media (max-width: 640px) { .realtor-inner { grid-template-columns: 1fr; text-align: center; } }
+    .realtor-photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--gold);
+    }
+    .realtor-name {
+      font-family: var(--font-serif);
+      font-size: 1.7rem;
+      margin-bottom: 0.3rem;
+    }
+    .realtor-title {
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .realtor-bio {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 1.75rem;
+    }
+    .realtor-contacts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.4rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: opacity var(--transition);
+      cursor: pointer;
+      border: none;
+    }
+    .contact-btn:hover { opacity: 0.82; }
+    .contact-btn.primary { background: var(--gold); color: var(--dark); }
+    .contact-btn.secondary {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #080808;
+      text-align: center;
+      padding: 2rem;
+      color: rgba(255,255,255,0.2);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+    footer span { color: var(--gold); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      position: relative;
+      width: 90%;
+      max-width: 700px;
+      background: var(--charcoal);
+      padding: 2rem;
+    }
+    .modal-close {
+      position: absolute;
+      top: 0.75rem; right: 1rem;
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .modal-box h3 {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .modal-box p {
+      color: rgba(255,255,255,0.55);
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+    .modal-form { display: flex; flex-direction: column; gap: 0.85rem; }
+    .modal-form input, .modal-form textarea {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--white);
+      padding: 0.75rem 1rem;
+      font-size: 0.88rem;
+      outline: none;
+      font-family: var(--font-sans);
+      transition: border-color var(--transition);
+      resize: none;
+    }
+    .modal-form input:focus,
+    .modal-form textarea:focus { border-color: var(--gold); }
+    .modal-form input::placeholder,
+    .modal-form textarea::placeholder { color: var(--muted); }
+    .modal-form button {
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      padding: 0.85rem;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity var(--transition);
+    }
+    .modal-form button:hover { opacity: 0.85; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Meridian Realty</div>
+  <div class="nav-links">
+    <a href="#emotion-video">Emotion Video</a>
+    <a href="#features">Features</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Exclusive Listing</div>
+    <h1 class="hero-title">123 Oakwood Drive<br>Beverly Hills, CA 90210</h1>
+    <p class="hero-subtitle">A masterpiece of modern luxury nestled among mature oaks</p>
+    <div class="hero-price">$3,850,000</div>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="val">5</span><span class="lbl">Bedrooms</span></div>
+      <div class="hero-stat"><span class="val">4.5</span><span class="lbl">Bathrooms</span></div>
+      <div class="hero-stat"><span class="val">6,200</span><span class="lbl">Sq Ft</span></div>
+      <div class="hero-stat"><span class="val">0.75</span><span class="lbl">Acres</span></div>
+    </div>
+    <a href="#contact" class="hero-cta" onclick="openModal()">
+      &#9654; Schedule a Private Tour
+    </a>
+  </div>
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- EMOTION VIDEO -->
+<section class="emotion-video-section" id="emotion-video">
+  <div class="ev-inner">
+    <div class="ev-header">
+      <div>
+        <div class="section-label">Emotion Video</div>
+        <h2 class="section-title">Feel the Story<br>of This Home</h2>
+        <p class="section-body">
+          Paste a YouTube property walkthrough link below and our AI will extract
+          the most emotionally compelling moments — golden-hour light flooding the
+          kitchen, the breathtaking view from the master suite, the laughter-ready
+          backyard — all woven into a cinematic highlight reel.
+        </p>
+      </div>
+    </div>
+
+    <form class="ev-form" id="evForm">
+      <input
+        type="text"
+        id="ytUrl"
+        placeholder="Paste property video YouTube URL…"
+        autocomplete="off"
+      />
+      <button type="submit" id="evBtn">Generate Emotion Video</button>
+    </form>
+
+    <div class="ev-status" id="evStatus">
+      <div class="spinner" id="evSpinner"></div>
+      <span id="evStatusText">Processing your property video…</span>
+    </div>
+
+    <div id="clipsContainer">
+      <!-- Placeholder cards shown before processing -->
+      <div class="demo-notice" id="demoNotice">
+        Your cinematic clips will appear here after processing
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section" id="features">
+  <div class="features-grid">
+    <div class="features-img">
+      <img
+        src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=800&q=80"
+        alt="Luxury interior"
+      />
+    </div>
+    <div>
+      <div class="section-label">Property Features</div>
+      <h2 class="section-title">Crafted for<br>Extraordinary Living</h2>
+      <p class="section-body">
+        Every detail of 123 Oakwood Drive has been curated for those who demand
+        the finest — from the chef's kitchen with Sub-Zero appliances to the
+        resort-style pool terrace.
+      </p>
+      <ul class="features-list">
+        <li>Chef's kitchen with Calacatta marble waterfall island</li>
+        <li>Primary suite with spa bath & dual walk-in closets</li>
+        <li>Home theater with 4K Dolby Atmos surround sound</li>
+        <li>Resort-style pool, spa &amp; outdoor kitchen</li>
+        <li>3-car garage with EV charging stations</li>
+        <li>Smart-home integration throughout</li>
+        <li>Whole-home generator &amp; solar panel array</li>
+        <li>Climate-controlled wine cellar (250-bottle capacity)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="gallery">
+  <div class="gallery-header">
+    <div class="section-label">Photo Gallery</div>
+    <h2 class="section-title">A Look Inside</h2>
+  </div>
+  <div class="gallery-scroll">
+    <img
+      class="gi-large"
+      src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80"
+      alt="Living room"
+    />
+    <img
+      src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80"
+      alt="Kitchen"
+    />
+    <img
+      src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=600&q=80"
+      alt="Bathroom"
+    />
+    <img
+      src="https://images.unsplash.com/photo-1571055107559-3e67626fa8be?w=600&q=80"
+      alt="Pool"
+    />
+    <img
+      src="https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=600&q=80"
+      alt="Bedroom"
+    />
+  </div>
+</section>
+
+<!-- NEIGHBORHOOD -->
+<section class="neighborhood-section" id="neighborhood">
+  <div class="neighborhood-inner">
+    <div>
+      <div class="section-label">Location</div>
+      <h2 class="section-title">The Finest<br>Neighborhood in LA</h2>
+      <p class="section-body">
+        Set in the heart of Beverly Hills, 123 Oakwood Drive places you minutes
+        from world-class dining, Rodeo Drive boutiques, top-ranked schools, and
+        the cultural pulse of Los Angeles — while a private gate ensures
+        complete serenity at home.
+      </p>
+    </div>
+    <div class="nb-cards">
+      <div class="nb-card">
+        <div class="icon">🍽️</div>
+        <div class="nb-name">Spago Beverly Hills</div>
+        <div class="nb-dist">0.4 mi · 8 min walk</div>
+      </div>
+      <div class="nb-card">
+        <div class="icon">🎓</div>
+        <div class="nb-name">Beverly Hills HS</div>
+        <div class="nb-dist">0.7 mi · top-rated</div>
+      </div>
+      <div class="nb-card">
+        <div class="icon">🛍️</div>
+        <div class="nb-name">Rodeo Drive</div>
+        <div class="nb-dist">1.1 mi · 5 min drive</div>
+      </div>
+      <div class="nb-card">
+        <div class="icon">🌳</div>
+        <div class="nb-name">Greystone Park</div>
+        <div class="nb-dist">0.3 mi · 6 min walk</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REALTOR -->
+<section class="realtor-section" id="contact">
+  <div class="realtor-inner">
+    <img
+      class="realtor-photo"
+      src="https://images.unsplash.com/photo-1560250097-0dc05ae8aeef?w=320&q=80"
+      alt="Realtor photo"
+    />
+    <div>
+      <div class="realtor-name">Alexandra Chen</div>
+      <div class="realtor-title">Luxury Property Specialist · DRE #01234567</div>
+      <p class="realtor-bio">
+        With over 18 years specializing in Beverly Hills and Bel Air estate
+        properties, Alexandra has facilitated more than $400 million in
+        residential transactions. Her approach combines deep local knowledge
+        with white-glove service — ensuring every client's experience is as
+        remarkable as the homes she represents.
+      </p>
+      <div class="realtor-contacts">
+        <button class="contact-btn primary" onclick="openModal()">
+          &#9993; Send a Message
+        </button>
+        <a class="contact-btn secondary" href="tel:+13105550199">
+          &#9990; (310) 555-0199
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  &copy; 2026 <span>Meridian Realty</span> · 9876 Wilshire Blvd, Beverly Hills CA 90210 ·
+  <a href="/" style="color:inherit;text-decoration:none;">ClipSlicer.ai</a> powered
+</footer>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h3>Schedule a Private Tour</h3>
+    <p>123 Oakwood Drive · Beverly Hills, CA · $3,850,000</p>
+    <form class="modal-form" onsubmit="submitInquiry(event)">
+      <input type="text"  name="name"    placeholder="Your Full Name"    required />
+      <input type="email" name="email"   placeholder="Email Address"     required />
+      <input type="tel"   name="phone"   placeholder="Phone Number"      />
+      <textarea           name="message" rows="4"
+        placeholder="Tell us about your preferred viewing date and any questions…"></textarea>
+      <button type="submit">Request a Showing</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  /* ── MODAL ── */
+  function openModal() {
+    document.getElementById('contactModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('contactModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('contactModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  function submitInquiry(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = 'Request Sent! ✓';
+    btn.disabled = true;
+    setTimeout(closeModal, 1800);
+  }
+
+  /* ── EMOTION VIDEO PROCESSING ── */
+  const form       = document.getElementById('evForm');
+  const statusEl   = document.getElementById('evStatus');
+  const statusText = document.getElementById('evStatusText');
+  const spinner    = document.getElementById('evSpinner');
+  const container  = document.getElementById('clipsContainer');
+  const notice     = document.getElementById('demoNotice');
+  const btn        = document.getElementById('evBtn');
+
+  const CLIP_LABELS = [
+    'The Golden Hour Kitchen',
+    'Master Suite Sanctuary',
+    'Resort-Style Escape',
+  ];
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const url = document.getElementById('ytUrl').value.trim();
+    if (!url) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Processing…';
+    notice.style.display = 'none';
+    container.innerHTML = '';
+    statusEl.classList.add('visible');
+    statusText.textContent = 'Downloading property footage…';
+
+    let jobId;
+    try {
+      const res = await fetch('/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ youtube_url: url }),
+      });
+      if (!res.ok) throw new Error('Upload failed');
+      const data = await res.json();
+      jobId = data.job_id;
+    } catch (err) {
+      showError('Could not start processing. Please check the URL and try again.');
+      return;
+    }
+
+    statusText.textContent = 'Extracting emotional highlights…';
+    pollStatus(jobId);
+  });
+
+  function pollStatus(jobId) {
+    const interval = setInterval(async () => {
+      try {
+        const r    = await fetch('/status/' + jobId);
+        const data = await r.json();
+
+        if (data.status === 'completed') {
+          clearInterval(interval);
+          statusText.textContent = 'Emotion video clips ready!';
+          spinner.style.display = 'none';
+          renderClips(jobId, data.clips);
+          btn.disabled    = false;
+          btn.textContent = 'Generate Emotion Video';
+        } else if (data.status === 'error') {
+          clearInterval(interval);
+          showError(data.error || 'Processing error. Please try another video.');
+        }
+      } catch {
+        clearInterval(interval);
+        showError('Connection lost. Please refresh and try again.');
+      }
+    }, 3000);
+  }
+
+  function renderClips(jobId, clips) {
+    if (!clips || clips.length === 0) {
+      container.innerHTML = '<div class="demo-notice">No clips were generated for this video.</div>';
+      return;
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'clips-grid';
+
+    clips.forEach((clip, i) => {
+      const label   = CLIP_LABELS[i] || ('Highlight ' + (i + 1));
+      const src     = '/clips/' + jobId + '/' + clip.clip.split('/').pop();
+      const minutes = s => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+      const timeStr = minutes(clip.start) + ' – ' + minutes(clip.end);
+
+      const card = document.createElement('div');
+      card.className = 'clip-card';
+
+      /* If actual clip file exists, show video; otherwise show placeholder */
+      if (clip.note && clip.note.includes('skipped')) {
+        card.innerHTML = `
+          <div class="clip-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+            <span>${label}</span>
+            <span style="font-size:0.65rem;opacity:0.5;">${timeStr}</span>
+          </div>
+          <div class="clip-info">
+            <div class="clip-title">${label}</div>
+            <div class="clip-time">${timeStr}</div>
+          </div>`;
+      } else {
+        card.innerHTML = `
+          <video controls preload="metadata" src="${src}"></video>
+          <div class="clip-info">
+            <div class="clip-title">${label}</div>
+            <div class="clip-time">${timeStr}</div>
+          </div>`;
+      }
+
+      grid.appendChild(card);
+    });
+
+    container.appendChild(grid);
+  }
+
+  function showError(msg) {
+    spinner.style.display = 'none';
+    statusText.textContent = '⚠ ' + msg;
+    statusEl.style.borderLeftColor = '#e05';
+    btn.disabled    = false;
+    btn.textContent = 'Generate Emotion Video';
+  }
+</script>
+</body>
+</html>
