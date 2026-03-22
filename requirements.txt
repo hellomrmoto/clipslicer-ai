@@ -1,2 +1,4 @@
 Flask
 pytube
+anthropic
+youtube-transcript-api
