@@ -1,47 +1,600 @@
 <!DOCTYPE html>
-<html>
-<head><title>ClipSlicer.ai</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Doobie Brothers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:   #0B1D78;
+      --yellow: #FFD700;
+      --green:  #008000;
+      --red:    #D21404;
+      --cyan:   #00BFFF;
+      --orange: #FF8C00;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--blue);
+      color: var(--yellow);
+      font-family: 'Barlow Condensed', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════════ */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 35% 55%, rgba(0,191,255,.09) 0%, transparent 58%),
+        radial-gradient(ellipse at 72% 28%, rgba(255,215,0,.07) 0%, transparent 50%),
+        var(--blue);
+    }
+
+    /* dark edge vignette */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,.55) 100%);
+      pointer-events: none;
+    }
+
+    /* ── crayon strokes ── */
+    .crayons {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .crayon {
+      position: absolute;
+      top: -8%;
+      height: 116%;
+      border-radius: 50px;
+      filter: url(#crayon-tex);
+      will-change: transform;
+    }
+
+    .c1 { left:  6%;  width: 23px; background: var(--yellow); animation: wig-a 3.3s ease-in-out infinite 0.0s; opacity:.9; }
+    .c2 { left: 18%;  width: 17px; background: var(--red);    animation: wig-b 4.2s ease-in-out infinite 0.7s; opacity:.85;}
+    .c3 { left: 33%;  width: 26px; background: var(--cyan);   animation: wig-a 3.8s ease-in-out infinite 1.3s; opacity:.8; }
+    .c4 { left: 52%;  width: 19px; background: var(--green);  animation: wig-c 4.6s ease-in-out infinite 0.4s; opacity:.85;}
+    .c5 { left: 68%;  width: 28px; background: var(--orange); animation: wig-b 4.0s ease-in-out infinite 1.0s; opacity:.9; }
+    .c6 { left: 83%;  width: 15px; background: var(--yellow); animation: wig-c 3.5s ease-in-out infinite 1.7s; opacity:.75;}
+    .c7 { left: 93%;  width: 20px; background: var(--red);    animation: wig-a 4.9s ease-in-out infinite 0.2s; opacity:.7; }
+
+    @keyframes wig-a {
+      0%   { transform: translateX( 0px) rotate( 0.0deg); }
+      18%  { transform: translateX( 5px) rotate( 0.8deg); }
+      38%  { transform: translateX(-4px) rotate(-0.7deg); }
+      57%  { transform: translateX( 6px) rotate( 1.1deg); }
+      78%  { transform: translateX(-5px) rotate(-0.9deg); }
+      100% { transform: translateX( 0px) rotate( 0.0deg); }
+    }
+    @keyframes wig-b {
+      0%   { transform: translateX( 0px) rotate( 0.0deg); }
+      22%  { transform: translateX(-7px) rotate(-1.1deg); }
+      45%  { transform: translateX( 5px) rotate( 0.8deg); }
+      68%  { transform: translateX(-3px) rotate(-0.5deg); }
+      100% { transform: translateX( 0px) rotate( 0.0deg); }
+    }
+    @keyframes wig-c {
+      0%   { transform: translateX( 0px) rotate( 0.0deg); }
+      15%  { transform: translateX( 4px) rotate( 0.6deg); }
+      33%  { transform: translateX(-8px) rotate(-1.3deg); }
+      52%  { transform: translateX( 6px) rotate( 1.0deg); }
+      70%  { transform: translateX(-4px) rotate(-0.6deg); }
+      88%  { transform: translateX( 7px) rotate( 1.2deg); }
+      100% { transform: translateX( 0px) rotate( 0.0deg); }
+    }
+
+    /* ── hero text ── */
+    .hero-inner {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    .hero-eyebrow {
+      font-size: clamp(.75rem, 1.8vw, 1rem);
+      letter-spacing: .6em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1.2rem;
+      opacity: .9;
+    }
+
+    .hero-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(4.5rem, 14vw, 13rem);
+      line-height: .88;
+      text-transform: uppercase;
+      background: linear-gradient(175deg, #fff5b4 0%, var(--yellow) 30%, var(--orange) 65%, var(--yellow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 40px rgba(255,215,0,.45));
+    }
+
+    .hero-rule {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1.6rem auto;
+      width: clamp(180px, 40%, 420px);
+    }
+    .hero-rule span {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--yellow), transparent);
+      opacity: .5;
+    }
+    .hero-rule em {
+      font-style: normal;
+      font-size: .6rem;
+      letter-spacing: .5em;
+      color: var(--yellow);
+      opacity: .6;
+      text-transform: uppercase;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      opacity: .85;
+    }
+
+    /* ── scroll caret ── */
+    .scroll-cue {
+      position: absolute;
+      bottom: 2.4rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .55rem;
+      animation: bob 2.1s ease-in-out infinite;
+      opacity: .55;
+    }
+    .scroll-cue p {
+      font-size: .65rem;
+      letter-spacing: .45em;
+      text-transform: uppercase;
+      color: var(--yellow);
+    }
+    .caret {
+      width: 18px; height: 18px;
+      border-right: 2px solid var(--yellow);
+      border-bottom: 2px solid var(--yellow);
+      transform: rotate(45deg);
+    }
+    @keyframes bob {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(9px); }
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       DOOBIE SCROLL REVEAL
+    ═══════════════════════════════════════════════════════ */
+    .reveal-track {
+      position: relative;
+      height: 320vh;
+    }
+
+    .reveal-stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #060f30;
+    }
+
+    /* subtle animated gradient bg on the reveal stage */
+    .reveal-stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 50%, rgba(11,29,120,.7) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    /* decorative horizontal lines */
+    .reveal-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .reveal-lines::before,
+    .reveal-lines::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,215,0,.12) 50%, transparent 100%);
+    }
+    .reveal-lines::before { top: 35%; }
+    .reveal-lines::after  { top: 65%; }
+
+    .doobie-row {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      gap: clamp(.2rem, 1.5vw, 1.2rem);
+    }
+
+    .d-letter {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(5rem, 19vw, 19rem);
+      line-height: 1;
+      opacity: 0;
+      transform: translateY(90px) scale(.75);
+      will-change: opacity, transform;
+      filter: drop-shadow(0 0 50px currentColor);
+    }
+
+    .d-D  { color: var(--yellow); }
+    .d-O1 { color: var(--orange); }
+    .d-O2 { color: var(--red);    }
+    .d-B  { color: var(--green);  }
+    .d-I  { color: var(--cyan);   }
+    .d-E  { color: var(--yellow); }
+
+    /* ═══════════════════════════════════════════════════════
+       BAND INFO
+    ═══════════════════════════════════════════════════════ */
+    .info {
+      background: #07122d;
+      padding: 7rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .info::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg,
+        var(--blue), var(--yellow), var(--orange), var(--red),
+        var(--green), var(--cyan), var(--blue));
+    }
+
+    .info-year {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      background: linear-gradient(135deg, var(--yellow), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 2px 20px rgba(255,215,0,.3));
+    }
+
+    .info-body {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(255,255,255,.65);
+      max-width: 680px;
+      margin: 0 auto 3rem;
+    }
+
+    .palette-swatches {
+      display: flex;
+      justify-content: center;
+      gap: .6rem;
+      flex-wrap: wrap;
+    }
+    .swatch {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      box-shadow: 0 0 16px currentColor;
+    }
+    .sw-1 { background: var(--blue);   color: var(--blue);   }
+    .sw-2 { background: var(--yellow); color: var(--yellow); }
+    .sw-3 { background: var(--green);  color: var(--green);  }
+    .sw-4 { background: var(--red);    color: var(--red);    }
+    .sw-5 { background: var(--cyan);   color: var(--cyan);   }
+    .sw-6 { background: var(--orange); color: var(--orange); }
+
+    /* ═══════════════════════════════════════════════════════
+       APP
+    ═══════════════════════════════════════════════════════ */
+    .app {
+      background: #040c20;
+      padding: 5rem 2rem 6rem;
+      text-align: center;
+      position: relative;
+    }
+    .app::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: rgba(255,215,0,.15);
+    }
+
+    .app-label {
+      font-size: clamp(.65rem, 1.5vw, .8rem);
+      letter-spacing: .55em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      opacity: .7;
+      margin-bottom: .6rem;
+    }
+
+    .app-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--yellow);
+      letter-spacing: .05em;
+      margin-bottom: .5rem;
+    }
+
+    .app-desc {
+      font-size: clamp(.85rem, 1.8vw, 1rem);
+      color: rgba(255,255,255,.4);
+      margin-bottom: 2.5rem;
+    }
+
+    .app-row {
+      display: flex;
+      gap: .8rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .app-row input[type="text"] {
+      padding: .75rem 1.4rem;
+      width: clamp(220px, 40vw, 380px);
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(0,191,255,.3);
+      border-radius: 4px;
+      color: #fff;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .app-row input[type="text"]:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 2px rgba(0,191,255,.15);
+    }
+    .app-row input[type="text"]::placeholder { color: rgba(255,255,255,.25); }
+
+    .app-row button {
+      padding: .75rem 2.2rem;
+      background: var(--yellow);
+      color: var(--blue);
+      border: none;
+      border-radius: 4px;
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: .08em;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+    .app-row button:hover  { background: var(--orange); }
+    .app-row button:active { transform: scale(.97); }
+
+    #status {
+      margin-top: 1.4rem;
+      font-size: .95rem;
+      color: var(--cyan);
+      min-height: 1.4rem;
+    }
+    #clipsList {
+      list-style: none;
+      margin-top: .8rem;
+      color: rgba(255,255,255,.6);
+      font-size: .9rem;
+    }
+    #clipsList li { padding: .25rem 0; }
+  </style>
+</head>
 <body>
-  <h1>ClipSlicer.ai</h1>
-  <form id="uploadForm">
+
+<!-- SVG filter defs: crayon rough-edge texture -->
+<svg width="0" height="0" aria-hidden="true" focusable="false"
+     style="position:absolute;overflow:hidden;pointer-events:none">
+  <defs>
+    <filter id="crayon-tex" x="-40%" y="-4%" width="180%" height="108%"
+            color-interpolation-filters="linearRGB">
+      <feTurbulence type="fractalNoise"
+                    baseFrequency="0.022 0.72"
+                    numOctaves="4"
+                    seed="7"
+                    stitchTiles="stitch"
+                    result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise"
+                         scale="11"
+                         xChannelSelector="R"
+                         yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ════════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section class="hero" aria-label="Hero">
+
+  <div class="crayons" aria-hidden="true">
+    <div class="crayon c1"></div>
+    <div class="crayon c2"></div>
+    <div class="crayon c3"></div>
+    <div class="crayon c4"></div>
+    <div class="crayon c5"></div>
+    <div class="crayon c6"></div>
+    <div class="crayon c7"></div>
+  </div>
+
+  <div class="hero-inner">
+    <p class="hero-eyebrow">The Legendary</p>
+    <h1 class="hero-title">Doobie<br>Brothers</h1>
+    <div class="hero-rule">
+      <span></span><em>&#9733; &#9733; &#9733;</em><span></span>
+    </div>
+    <p class="hero-sub">Rock &nbsp;&bull;&nbsp; Soul &nbsp;&bull;&nbsp; Funk</p>
+  </div>
+
+  <div class="scroll-cue" aria-hidden="true">
+    <p>Scroll</p>
+    <div class="caret"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     DOOBIE SCROLL REVEAL
+════════════════════════════════════════ -->
+<div class="reveal-track" id="revealTrack">
+  <div class="reveal-stage">
+    <div class="reveal-lines" aria-hidden="true"></div>
+    <div class="doobie-row" aria-label="DOOBIE">
+      <span class="d-letter d-D"  data-idx="0">D</span>
+      <span class="d-letter d-O1" data-idx="1">O</span>
+      <span class="d-letter d-O2" data-idx="2">O</span>
+      <span class="d-letter d-B"  data-idx="3">B</span>
+      <span class="d-letter d-I"  data-idx="4">I</span>
+      <span class="d-letter d-E"  data-idx="5">E</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     BAND INFO
+════════════════════════════════════════ -->
+<section class="info" aria-label="About">
+  <p class="info-year">Since 1970</p>
+  <p class="info-body">
+    Born in the bars of San Jose, California, The Doobie Brothers forged a sound
+    that blended hard rock, R&amp;B, and country soul into something entirely their own.
+    From <em style="color:var(--yellow)">"Listen to the Music"</em>
+    to <em style="color:var(--cyan)">"What a Fool Believes"</em> &mdash;
+    their catalog is a testament to American music at its most soulful and enduring.
+  </p>
+  <div class="palette-swatches" aria-label="Palette">
+    <div class="swatch sw-1" title="#0B1D78"></div>
+    <div class="swatch sw-2" title="#FFD700"></div>
+    <div class="swatch sw-3" title="#008000"></div>
+    <div class="swatch sw-4" title="#D21404"></div>
+    <div class="swatch sw-5" title="#00BFFF"></div>
+    <div class="swatch sw-6" title="#FF8C00"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     CLIPSLICER APP
+════════════════════════════════════════ -->
+<section class="app" aria-label="ClipSlicer">
+  <p class="app-label">Powered by AI</p>
+  <h2 class="app-title">ClipSlicer.ai</h2>
+  <p class="app-desc">Paste a YouTube link to extract the best clips</p>
+  <form id="uploadForm" class="app-row">
     <input type="text" id="youtubeUrl" placeholder="Paste YouTube link..." required>
     <button type="submit">Submit</button>
   </form>
-  <div id="status"></div>
+  <div id="status" aria-live="polite"></div>
   <ul id="clipsList"></ul>
+</section>
 
-  <script>
-    document.getElementById('uploadForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const url = document.getElementById('youtubeUrl').value;
-      const res = await fetch('/upload', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ youtube_url: url })
+<script>
+  // ── DOOBIE SCROLL REVEAL ──────────────────────────────────────────────────
+  (function () {
+    const track   = document.getElementById('revealTrack');
+    const letters = Array.from(document.querySelectorAll('.d-letter'));
+    const N       = letters.length;
+
+    function clamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
+    function lerp(a, b, t)    { return a + (b - a) * clamp(t, 0, 1); }
+
+    function render() {
+      const rect      = track.getBoundingClientRect();
+      const trackH    = track.offsetHeight;
+      const viewH     = window.innerHeight;
+      const scrolled  = -rect.top;               // px scrolled into track
+      const totalScroll = trackH - viewH;        // total scrollable px
+      const progress  = scrolled / totalScroll;  // 0 → 1
+
+      letters.forEach(function (el, i) {
+        var start = i / N;
+        var end   = (i + 0.7) / N;
+        var t     = (progress - start) / (end - start);
+        var op    = lerp(0, 1, t);
+        var y     = lerp(90, 0, t);
+        var s     = lerp(0.72, 1, t);
+        el.style.opacity   = op;
+        el.style.transform = 'translateY(' + y + 'px) scale(' + s + ')';
       });
-      const { job_id } = await res.json();
-      const statusDiv = document.getElementById('status');
-      const clipsList = document.getElementById('clipsList');
+    }
 
-      statusDiv.innerText = 'Processing...';
-      const interval = setInterval(async () => {
-        const r = await fetch(`/status/${job_id}`);
-        const data = await r.json();
-        if (data.status === 'completed') {
-          clearInterval(interval);
-          statusDiv.innerText = 'Done!';
-          clipsList.innerHTML = '';
-          data.clips.forEach(c => {
-            const li = document.createElement('li');
-            li.innerText = `${c.clip} (${c.note})`;
-            clipsList.appendChild(li);
-          });
-        } else if (data.status === 'error') {
-          clearInterval(interval);
-          statusDiv.innerText = 'Error: ' + data.error;
-        }
-      }, 3000);
+    window.addEventListener('scroll', render, { passive: true });
+    window.addEventListener('resize', render, { passive: true });
+    render();
+  }());
+
+  // ── CLIPSLICER FORM ────────────────────────────────────────────────────────
+  document.getElementById('uploadForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var url = document.getElementById('youtubeUrl').value;
+    var res = await fetch('/upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ youtube_url: url })
     });
-  </script>
+    var data = await res.json();
+    var jobId = data.job_id;
+    var statusEl = document.getElementById('status');
+    var listEl   = document.getElementById('clipsList');
+
+    statusEl.textContent = 'Processing…';
+    var interval = setInterval(async function () {
+      var r    = await fetch('/status/' + jobId);
+      var info = await r.json();
+      if (info.status === 'completed') {
+        clearInterval(interval);
+        statusEl.textContent = 'Done!';
+        listEl.innerHTML = '';
+        info.clips.forEach(function (c) {
+          var li = document.createElement('li');
+          li.textContent = c.clip + ' (' + c.note + ')';
+          listEl.appendChild(li);
+        });
+      } else if (info.status === 'error') {
+        clearInterval(interval);
+        statusEl.textContent = 'Error: ' + info.error;
+      }
+    }, 3000);
+  });
+</script>
 </body>
 </html>
