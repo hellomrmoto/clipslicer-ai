@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Experience — NOVA Space Tourism</title>
+  <meta name="description" content="Everything you need to know about the NOVA passenger experience — from training to touchdown." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ---- Page Hero ---- */
+    .page-hero {
+      padding: 160px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,197,24,0.08) 0%, transparent 65%);
+      top: -300px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .page-hero h1 { font-size: clamp(2.4rem, 6vw, 4.5rem); margin-bottom: 20px; }
+    .page-hero p { color: var(--muted); font-size: 1.1rem; max-width: 560px; margin: 0 auto; }
+
+    /* ---- Timeline ---- */
+    .timeline {
+      position: relative;
+      padding: 20px 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--blue), var(--gold));
+      transform: translateX(-50%);
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-bottom: 64px;
+      align-items: center;
+    }
+
+    .timeline-item:nth-child(even) .timeline-content { order: 2; }
+    .timeline-item:nth-child(even) .timeline-visual { order: 1; text-align: right; }
+
+    .timeline-item:nth-child(odd) .timeline-visual { text-align: left; }
+
+    .timeline-node {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--blue);
+      z-index: 2;
+    }
+
+    .timeline-item { position: relative; }
+
+    .timeline-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+
+    .timeline-step {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .timeline-content h3 { font-size: 1.3rem; margin-bottom: 12px; }
+    .timeline-content p { color: var(--muted); font-size: 0.92rem; line-height: 1.8; }
+
+    .timeline-visual-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 160px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 4rem;
+      background: var(--bg-card);
+    }
+
+    /* ---- Phases Grid ---- */
+    .phase-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phase-card::before {
+      content: attr(data-num);
+      position: absolute;
+      top: -20px;
+      right: 20px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 6rem;
+      font-weight: 900;
+      color: rgba(79,142,247,0.06);
+      line-height: 1;
+    }
+
+    .phase-card h3 { font-size: 1.15rem; margin-bottom: 12px; position: relative; }
+    .phase-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; position: relative; }
+
+    .phase-duration {
+      display: inline-block;
+      margin-bottom: 18px;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      font-weight: 600;
+    }
+
+    /* ---- Accordion ---- */
+    .accordion { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+
+    .accordion-item { border-bottom: 1px solid var(--border); }
+    .accordion-item:last-child { border-bottom: none; }
+
+    .accordion-trigger {
+      width: 100%;
+      background: var(--bg-card);
+      border: none;
+      padding: 22px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: background var(--transition);
+    }
+
+    .accordion-trigger:hover { background: var(--bg-card2); }
+
+    .accordion-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      color: var(--muted);
+      flex-shrink: 0;
+      transition: transform var(--transition), border-color var(--transition);
+    }
+
+    .accordion-item.open .accordion-icon {
+      transform: rotate(45deg);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      background: var(--bg-card2);
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      padding: 0 28px;
+    }
+
+    .accordion-item.open .accordion-body {
+      max-height: 400px;
+      padding: 24px 28px;
+    }
+
+    .accordion-body p {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.8;
+    }
+
+    /* ---- Media safety block ---- */
+    .safety-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .safety-item {
+      background: var(--bg-card);
+      padding: 32px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .safety-icon {
+      font-size: 2rem;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .safety-item h4 { font-size: 1rem; margin-bottom: 8px; }
+    .safety-item p { color: var(--muted); font-size: 0.88rem; line-height: 1.7; }
+
+    @media (max-width: 900px) {
+      .timeline::before { left: 24px; }
+      .timeline-item { grid-template-columns: 1fr; gap: 20px; padding-left: 56px; }
+      .timeline-item:nth-child(even) .timeline-content { order: unset; }
+      .timeline-item:nth-child(even) .timeline-visual { order: unset; text-align: left; }
+      .timeline-node { left: 24px; }
+      .safety-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .timeline-visual-box { height: 100px; font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">NOVA<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="missions.html">Missions</a></li>
+        <li><a href="experience.html" class="active">Experience</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="nav-cta">Book Now</a></li>
+      </ul>
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="mobile-nav">
+      <a href="index.html">Home</a>
+      <a href="missions.html">Missions</a>
+      <a href="experience.html">Experience</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Book Now</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="container">
+      <div class="section-label">From Reservation to Re-entry</div>
+      <h1>The <span class="gradient-text">Experience</span></h1>
+      <div class="divider divider-center"></div>
+      <p>We've designed every moment of your NOVA journey — from your first phone call to the post-mission debrief — to be as extraordinary as the mission itself.</p>
+    </div>
+  </div>
+
+  <!-- Journey Timeline -->
+  <section>
+    <div class="container">
+      <div class="text-center fade-up" style="margin-bottom: 64px;">
+        <div class="section-label">Your Journey</div>
+        <h2 class="section-title">Step by Step</h2>
+        <div class="divider divider-center"></div>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item fade-up">
+          <div class="timeline-node">01</div>
+          <div class="timeline-content">
+            <div class="timeline-step">Step 01 — Discovery</div>
+            <h3>Mission Consultation</h3>
+            <p>Your journey begins with a private one-on-one consultation with a NOVA Mission Specialist. We learn your goals, answer every question, and help you choose the mission that's right for you. No pressure, just possibility.</p>
+          </div>
+          <div class="timeline-visual">
+            <div class="timeline-visual-box">&#128222;</div>
+          </div>
+        </div>
+
+        <div class="timeline-item fade-up">
+          <div class="timeline-node">02</div>
+          <div class="timeline-content">
+            <div class="timeline-step">Step 02 — Preparation</div>
+            <h3>Medical &amp; Fitness Assessment</h3>
+            <p>A comprehensive but non-intimidating health screening performed by our aerospace medicine team. We assess cardiovascular fitness, vestibular tolerance, and psychological readiness — then tailor your training accordingly.</p>
+          </div>
+          <div class="timeline-visual">
+            <div class="timeline-visual-box">&#129657;</div>
+          </div>
+        </div>
+
+        <div class="timeline-item fade-up">
+          <div class="timeline-node">03</div>
+          <div class="timeline-content">
+            <div class="timeline-step">Step 03 — Training</div>
+            <h3>NOVA Astronaut Academy</h3>
+            <p>Our world-class training campus in New Mexico prepares you for everything: centrifuge runs, microgravity water-tank simulations, emergency protocols, spacecraft systems, and comfort in your flight suit. Rigorous. Unforgettable.</p>
+          </div>
+          <div class="timeline-visual">
+            <div class="timeline-visual-box">&#127947;</div>
+          </div>
+        </div>
+
+        <div class="timeline-item fade-up">
+          <div class="timeline-node">04</div>
+          <div class="timeline-content">
+            <div class="timeline-step">Step 04 — Launch Week</div>
+            <h3>Pre-Launch Rituals</h3>
+            <p>Arrive at our spaceport for final mission rehearsals, suit fittings, and your ceremonial crew dinner. The night before launch, sleep under a desert sky full of the stars you'll soon be among.</p>
+          </div>
+          <div class="timeline-visual">
+            <div class="timeline-visual-box">&#127774;</div>
+          </div>
+        </div>
+
+        <div class="timeline-item fade-up">
+          <div class="timeline-node">05</div>
+          <div class="timeline-content">
+            <div class="timeline-step">Step 05 — The Mission</div>
+            <h3>Launch &amp; Beyond</h3>
+            <p>Engines ignite. You are pressed into your seat at 3G as Earth falls away beneath you. Then silence — the most profound silence you've ever known — and the universe spreads out in every direction. This is what you came for.</p>
+          </div>
+          <div class="timeline-visual">
+            <div class="timeline-visual-box">&#128640;</div>
+          </div>
+        </div>
+
+        <div class="timeline-item fade-up">
+          <div class="timeline-node">06</div>
+          <div class="timeline-content">
+            <div class="timeline-step">Step 06 — Return</div>
+            <h3>Re-entry &amp; Landing</h3>
+            <p>You return through a plasma sheath of re-entry, parachute down through clouds, and touch down safely. Your NOVA recovery team is there to greet you. Welcome back, astronaut.</p>
+          </div>
+          <div class="timeline-visual">
+            <div class="timeline-visual-box">&#127965;</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Training Phases -->
+  <section style="background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="text-center fade-up" style="margin-bottom: 56px;">
+        <div class="section-label">NOVA Astronaut Academy</div>
+        <h2 class="section-title">Your Training Program</h2>
+        <div class="divider divider-center"></div>
+        <p class="section-subtitle">Designed for civilians — not career astronauts. You don't need to be an athlete, engineer, or pilot. You just need to show up ready.</p>
+      </div>
+
+      <div class="grid-3 stagger-children">
+
+        <div class="phase-card" data-num="1">
+          <div class="phase-duration">Days 1–3</div>
+          <h3>Orientation &amp; Theory</h3>
+          <p>Spacecraft systems, orbital mechanics basics, emergency procedures, communication protocols, and your first zero-gravity simulation in our parabolic flight aircraft.</p>
+        </div>
+
+        <div class="phase-card" data-num="2">
+          <div class="phase-duration">Days 4–10</div>
+          <h3>Physical Conditioning</h3>
+          <p>Centrifuge training, neutral buoyancy pool sessions, cardiovascular endurance work, and vestibular adaptation exercises guided by our aerospace physiology team.</p>
+        </div>
+
+        <div class="phase-card" data-num="3">
+          <div class="phase-duration">Days 11–14</div>
+          <h3>Crew Integration</h3>
+          <p>Full mission simulations with your crew, emergency scenario drills, communication roleplay, and psychological resilience coaching.</p>
+        </div>
+
+        <div class="phase-card" data-num="4">
+          <div class="phase-duration">Days 15–18</div>
+          <h3>Vehicle Familiarization</h3>
+          <p>Hands-on time inside the actual spacecraft — learning the cabin layout, window operation, restraint systems, suit donning/doffing, and personal equipment.</p>
+        </div>
+
+        <div class="phase-card" data-num="5">
+          <div class="phase-duration">Days 19–21</div>
+          <h3>Full Dress Rehearsal</h3>
+          <p>End-to-end launch day simulation: wake-up protocols, breakfast, suit up, crew vehicle, launch site walkthrough, and full countdown procedure.</p>
+        </div>
+
+        <div class="phase-card" data-num="6">
+          <div class="phase-duration">Launch Week</div>
+          <h3>Pre-Mission Isolation</h3>
+          <p>Light activity, final medical checks, rest, and psychological preparation. Private time with family before your launch day. This is your moment — we protect it.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Accordion -->
+  <section>
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:start;">
+
+        <div class="fade-up">
+          <div class="section-label">Got Questions?</div>
+          <h2 class="section-title">Frequently Asked</h2>
+          <div class="divider"></div>
+          <p style="color:var(--muted);font-size:0.95rem;line-height:1.8;margin-bottom:32px;">We understand space travel is a big decision. Here are answers to the questions our candidates ask most often.</p>
+          <a href="contact.html" class="btn btn-secondary">Ask a Specialist &#8594;</a>
+        </div>
+
+        <div class="fade-up" style="transition-delay:0.15s;">
+          <div class="accordion">
+
+            <div class="accordion-item open">
+              <button class="accordion-trigger">
+                Do I need prior flying experience?
+                <span class="accordion-icon">+</span>
+              </button>
+              <div class="accordion-body">
+                <p>No prior flying, piloting, or aerospace experience is required. Our Astronaut Academy is specifically built for civilian passengers. We've trained professionals from every background — artists, executives, teachers, and athletes. What matters is attitude, not credentials.</p>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-trigger">
+                What are the health requirements?
+                <span class="accordion-icon">+</span>
+              </button>
+              <div class="accordion-body">
+                <p>Candidates must be able to tolerate up to 3G of acceleration, pass a cardiovascular health assessment, and have no active neurological or severe cardiac conditions. Our aerospace medicine team works individually with each candidate — many people who believe they may be ineligible are cleared after a proper evaluation.</p>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-trigger">
+                What does weightlessness actually feel like?
+                <span class="accordion-icon">+</span>
+              </button>
+              <div class="accordion-body">
+                <p>It's difficult to describe — most passengers say it's simultaneously the most surreal and most natural feeling they've ever had. Your body floats effortlessly. There's no sensation of falling. Our training gives you multiple weightlessness experiences before your mission so you're fully comfortable.</p>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-trigger">
+                Is space travel safe?
+                <span class="accordion-icon">+</span>
+              </button>
+              <div class="accordion-body">
+                <p>NOVA has completed 147 missions with a 99.9% mission success rate. Our spacecraft feature redundant abort systems, triple-redundant life support, and a continuous mission control team. We take safety more seriously than any other aspect of our operations.</p>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <button class="accordion-trigger">
+                Can I bring personal items on board?
+                <span class="accordion-icon">+</span>
+              </button>
+              <div class="accordion-body">
+                <p>Yes — each passenger is allocated 200g of personal items for the mission. These often include photographs, letters, small mementos. Items that have flown to space hold a special place for most of our alumni. Your Mission Specialist will brief you on packaging requirements.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Safety Section -->
+  <section style="padding-top: 0;">
+    <div class="container">
+      <div class="text-center fade-up" style="margin-bottom: 48px;">
+        <div class="section-label">Our Commitment</div>
+        <h2 class="section-title">Safety Above All</h2>
+        <div class="divider divider-center"></div>
+      </div>
+
+      <div class="safety-grid">
+        <div class="safety-item">
+          <div class="safety-icon">&#128737;</div>
+          <div>
+            <h4>Triple-Redundant Life Support</h4>
+            <p>Every critical system — oxygen, pressure, thermal — is backed by two independent redundant systems. One failure changes nothing.</p>
+          </div>
+        </div>
+        <div class="safety-item">
+          <div class="safety-icon">&#128268;</div>
+          <div>
+            <h4>Autonomous Abort Systems</h4>
+            <p>Our spacecraft can initiate a crew separation abort in under 300 milliseconds, faster than any human reaction time.</p>
+          </div>
+        </div>
+        <div class="safety-item">
+          <div class="safety-icon">&#127973;</div>
+          <div>
+            <h4>24/7 Mission Control</h4>
+            <p>A dedicated team of 40+ specialists monitors every spacecraft continuously throughout all phases of flight.</p>
+          </div>
+        </div>
+        <div class="safety-item">
+          <div class="safety-icon">&#129658;</div>
+          <div>
+            <h4>Onboard Medical Officer</h4>
+            <p>Every orbital and lunar mission includes a certified aerospace medicine physician as part of the professional crew.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">NOVA<span>.</span></a>
+          <p>The world's premier space tourism company. Redefining what it means to explore — one orbit at a time.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="missions.html">Missions</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="about.html#team">Team</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="contact.html">Book a Consultation</a></li>
+            <li><a href="#">hello@nova.space</a></li>
+            <li><a href="#">+1 (888) NOVA-FLY</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 NOVA Space Tourism, Inc. All rights reserved.</span>
+        <span>Privacy Policy &nbsp;|&nbsp; Terms of Service &nbsp;|&nbsp; Safety Standards</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NOVA — Premium Space Tourism</title>
+  <meta name="description" content="NOVA offers exclusive space tourism experiences — orbital flights, lunar passes, and beyond. Where Earth ends, adventure begins." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ---- Hero ---- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding-top: 72px;
+    }
+
+    .hero-orb {
+      position: absolute;
+      width: 800px;
+      height: 800px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 40%,
+        rgba(79,142,247,0.18) 0%,
+        rgba(245,197,24,0.06) 40%,
+        transparent 70%);
+      top: -200px;
+      right: -200px;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .hero-orb-2 {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(79,142,247,0.1) 0%,
+        transparent 70%);
+      bottom: -100px;
+      left: -150px;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(79,142,247,0.12);
+      border: 1px solid rgba(79,142,247,0.3);
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      font-weight: 600;
+      margin-bottom: 32px;
+    }
+
+    .hero-tag-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--blue);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 900;
+      margin-bottom: 24px;
+      line-height: 1.1;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      display: block;
+      color: var(--gold);
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 42px;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 72px;
+      padding-top: 48px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    /* ---- Featured Missions ---- */
+    .mission-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .mission-card:hover {
+      border-color: rgba(79,142,247,0.4);
+      transform: translateY(-6px);
+    }
+
+    .mission-card-visual {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mission-visual-earth {
+      background: radial-gradient(circle at 40% 60%, #1a3f8f 0%, #0a1f4e 40%, #050810 100%);
+    }
+
+    .mission-visual-lunar {
+      background: radial-gradient(circle at 50% 50%, #2a2a3e 0%, #141422 50%, #050810 100%);
+    }
+
+    .mission-visual-orbit {
+      background: radial-gradient(circle at 60% 30%, #1a4f3f 0%, #0a2520 50%, #050810 100%);
+    }
+
+    .mission-card-visual::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, var(--bg-card) 100%);
+    }
+
+    .mission-planet {
+      position: absolute;
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .mission-card-body { padding: 28px; }
+    .mission-card-body h3 { font-size: 1.2rem; margin: 12px 0 10px; }
+    .mission-card-body p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px; }
+
+    .mission-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .mission-price {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .mission-price small {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 400;
+      display: block;
+    }
+
+    .mission-link {
+      font-size: 0.82rem;
+      color: var(--blue);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      transition: gap var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mission-link:hover { gap: 10px; }
+
+    /* ---- Feature Highlights ---- */
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+
+    .feature-icon-blue { background: rgba(79,142,247,0.15); }
+    .feature-icon-gold { background: rgba(245,197,24,0.12); }
+    .feature-icon-green { background: rgba(52,211,153,0.12); }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+    /* ---- Testimonials ---- */
+    .testimonials-section { background: var(--bg-card); }
+
+    .testimonial-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+    }
+
+    .testimonial-text {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text);
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+
+    .testimonial-text::before { content: '"'; font-size: 2rem; color: var(--gold); line-height: 0; vertical-align: -12px; margin-right: 4px; }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #000;
+    }
+
+    .author-name { font-weight: 600; font-size: 0.9rem; }
+    .author-title { font-size: 0.78rem; color: var(--muted); }
+
+    /* ---- CTA Banner ---- */
+    .cta-banner {
+      background: linear-gradient(135deg, #0d1e4a 0%, #0d2a1e 100%);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 72px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,142,247,0.15) 0%, transparent 60%);
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .cta-banner h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 18px; }
+    .cta-banner p { color: var(--muted); font-size: 1.05rem; max-width: 500px; margin: 0 auto 36px; }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">NOVA<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="missions.html">Missions</a></li>
+        <li><a href="experience.html">Experience</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="nav-cta">Book Now</a></li>
+      </ul>
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="mobile-nav">
+      <a href="index.html">Home</a>
+      <a href="missions.html">Missions</a>
+      <a href="experience.html">Experience</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Book Now</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-orb"></div>
+    <div class="hero-orb-2"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-tag">
+          <span class="hero-tag-dot"></span>
+          Now Accepting 2027 Reservations
+        </div>
+        <h1>
+          The Universe
+          <em>Is Calling.</em>
+        </h1>
+        <p class="hero-desc">
+          NOVA is the world's premier space tourism company — offering orbital flights, lunar passes, and beyond. Your seat among the stars awaits.
+        </p>
+        <div class="hero-cta">
+          <a href="missions.html" class="btn btn-primary">Explore Missions &#8599;</a>
+          <a href="experience.html" class="btn btn-secondary">What to Expect</a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="stat-number" data-count="147" data-suffix="+">0</div>
+            <div class="stat-label">Missions Completed</div>
+          </div>
+          <div>
+            <div class="stat-number" data-count="2300" data-suffix="+">0</div>
+            <div class="stat-label">Passengers Flown</div>
+          </div>
+          <div>
+            <div class="stat-number" data-count="99" data-suffix="%">0</div>
+            <div class="stat-label">Safety Record</div>
+          </div>
+          <div>
+            <div class="stat-number" data-count="12">0</div>
+            <div class="stat-label">Unique Destinations</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Missions -->
+  <section>
+    <div class="container">
+      <div class="text-center fade-up">
+        <div class="section-label">Our Flagship Programs</div>
+        <h2 class="section-title">Choose Your Mission</h2>
+        <div class="divider divider-center"></div>
+        <p class="section-subtitle">From suborbital thrills to extended lunar tours — every journey is meticulously crafted for safety and wonder.</p>
+      </div>
+
+      <div class="grid-3 stagger-children" style="margin-top: 56px;">
+
+        <!-- Card 1 -->
+        <div class="mission-card">
+          <div class="mission-card-visual mission-visual-earth">
+            <div class="mission-planet" style="width:140px;height:140px;background:radial-gradient(circle at 35% 35%,#2d6adf,#0d2766,#050810);top:30px;left:30px;box-shadow:0 0 40px rgba(45,106,223,0.4);"></div>
+          </div>
+          <div class="mission-card-body">
+            <span class="badge badge-green">Available Now</span>
+            <h3>Suborbital Arc</h3>
+            <p>Reach 120km altitude and experience six minutes of weightlessness with a panoramic view of Earth's curvature.</p>
+            <div class="mission-meta">
+              <div class="mission-price">
+                $250,000
+                <small>per seat</small>
+              </div>
+              <a href="missions.html" class="mission-link">Details &#8594;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="mission-card">
+          <div class="mission-card-visual mission-visual-orbit">
+            <div class="mission-planet" style="width:100px;height:100px;background:radial-gradient(circle at 40% 30%,#2a7f6e,#0d3328,#050810);top:50px;right:40px;box-shadow:0 0 30px rgba(42,127,110,0.3);animation-delay:-2s;"></div>
+          </div>
+          <div class="mission-card-body">
+            <span class="badge badge-blue">7-Day Mission</span>
+            <h3>Orbital Retreat</h3>
+            <p>Spend a full week aboard our luxury orbital habitat — 16 sunrises a day, gourmet dining, and zero-g yoga.</p>
+            <div class="mission-meta">
+              <div class="mission-price">
+                $1.8M
+                <small>per seat</small>
+              </div>
+              <a href="missions.html" class="mission-link">Details &#8594;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="mission-card">
+          <div class="mission-card-visual mission-visual-lunar">
+            <div class="mission-planet" style="width:130px;height:130px;background:radial-gradient(circle at 45% 40%,#4a4a6a,#252535,#050810);top:35px;right:20px;box-shadow:0 0 35px rgba(100,100,160,0.25);animation-delay:-4s;"></div>
+          </div>
+          <div class="mission-card-body">
+            <span class="badge badge-gold">Limited Seats</span>
+            <h3>Lunar Passage</h3>
+            <p>A 12-day circumlunar journey — fly within 100km of the Moon's surface and return with a perspective few humans have known.</p>
+            <div class="mission-meta">
+              <div class="mission-price">
+                $12M
+                <small>per seat</small>
+              </div>
+              <a href="missions.html" class="mission-link">Details &#8594;</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section style="background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="text-center fade-up">
+        <div class="section-label">Why Choose NOVA</div>
+        <h2 class="section-title">Built for the <span class="gradient-text">Bold</span></h2>
+        <div class="divider divider-center"></div>
+      </div>
+
+      <div class="grid-3 stagger-children" style="margin-top: 56px;">
+
+        <div class="card feature-card">
+          <div class="feature-icon feature-icon-blue">&#128640;</div>
+          <h3>Proven Safety Systems</h3>
+          <p>Our spacecraft have completed 147+ missions with a flawless safety record, backed by redundant life-support and escape systems.</p>
+        </div>
+
+        <div class="card feature-card">
+          <div class="feature-icon feature-icon-gold">&#127775;</div>
+          <h3>Luxury Aboard</h3>
+          <p>Michelin-trained zero-gravity chefs, noise-cancellation sleep pods, and 180° panoramic observation domes — comfort above all.</p>
+        </div>
+
+        <div class="card feature-card">
+          <div class="feature-icon feature-icon-green">&#127981;</div>
+          <h3>Elite Training</h3>
+          <p>Every passenger completes our 3-week NOVA Astronaut Academy — rigorous, fun, and designed for civilians of all fitness levels.</p>
+        </div>
+
+        <div class="card feature-card">
+          <div class="feature-icon feature-icon-blue">&#127760;</div>
+          <h3>Carbon Neutral</h3>
+          <p>We offset every launch through global reforestation and direct air capture partnerships. Space exploration, responsibly done.</p>
+        </div>
+
+        <div class="card feature-card">
+          <div class="feature-icon feature-icon-gold">&#129351;</div>
+          <h3>White-Glove Concierge</h3>
+          <p>From your first inquiry to post-mission debriefs, a dedicated Mission Specialist handles every detail of your journey.</p>
+        </div>
+
+        <div class="card feature-card">
+          <div class="feature-icon feature-icon-green">&#127963;</div>
+          <h3>Custom Charters</h3>
+          <p>Private corporate missions, proposal flights, and scientific research partnerships — we build the mission around your goals.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section>
+    <div class="container">
+      <div class="text-center fade-up">
+        <div class="section-label">Mission Alumni</div>
+        <h2 class="section-title">From Those Who've Been There</h2>
+        <div class="divider divider-center"></div>
+      </div>
+
+      <div class="grid-3 stagger-children" style="margin-top: 56px;">
+
+        <div class="testimonial-card">
+          <p class="testimonial-text">
+            Seeing Earth from orbit changed everything. No borders, no divisions — just this fragile, luminous sphere. NOVA made that possible for me.
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background: var(--gold);">SR</div>
+            <div>
+              <div class="author-name">Sophia Reyes</div>
+              <div class="author-title">Orbital Retreat, 2025</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <p class="testimonial-text">
+            The training was challenging but NOVA's crew made it feel like a family from day one. The launch itself? I cried. Happy tears — all of them.
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background: var(--blue);">MK</div>
+            <div>
+              <div class="author-name">Marcus Kim</div>
+              <div class="author-title">Suborbital Arc, 2024</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <p class="testimonial-text">
+            Flying around the Moon and seeing the far side with my own eyes — I keep saying I'm still processing it. Three years later, I'm still processing it.
+          </p>
+          <div class="testimonial-author">
+            <div class="author-avatar" style="background: #a855f7;">AV</div>
+            <div>
+              <div class="author-name">Anika Voss</div>
+              <div class="author-title">Lunar Passage, 2024</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section>
+    <div class="container">
+      <div class="cta-banner fade-up">
+        <div class="section-label" style="margin-bottom:20px;">Ready to Launch?</div>
+        <h2>Your Name Among <span class="gradient-text">The Stars</span></h2>
+        <p>Join the waitlist for 2027 missions. Seats are strictly limited — secure yours before they're gone.</p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <a href="contact.html" class="btn btn-primary">Reserve Your Seat &#8599;</a>
+          <a href="missions.html" class="btn btn-secondary">View All Missions</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">NOVA<span>.</span></a>
+          <p>The world's premier space tourism company. Redefining what it means to explore — one orbit at a time.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="missions.html">Missions</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="about.html#team">Team</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="contact.html">Book a Consultation</a></li>
+            <li><a href="#">hello@nova.space</a></li>
+            <li><a href="#">+1 (888) NOVA-FLY</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 NOVA Space Tourism, Inc. All rights reserved.</span>
+        <span>Privacy Policy &nbsp;|&nbsp; Terms of Service &nbsp;|&nbsp; Safety Standards</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

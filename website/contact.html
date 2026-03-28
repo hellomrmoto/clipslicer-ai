@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — NOVA Space Tourism</title>
+  <meta name="description" content="Reserve your seat or speak with a NOVA Mission Specialist. Your journey to space starts with a single message." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    /* ---- Page Hero ---- */
+    .page-hero {
+      padding: 160px 0 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245,197,24,0.07) 0%, transparent 65%);
+      top: -300px;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .page-hero h1 { font-size: clamp(2.4rem, 6vw, 4.5rem); margin-bottom: 20px; }
+    .page-hero p { color: var(--muted); font-size: 1.1rem; max-width: 560px; margin: 0 auto; }
+
+    /* ---- Contact Layout ---- */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    /* ---- Info Side ---- */
+    .contact-info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 36px;
+      margin-bottom: 24px;
+    }
+
+    .contact-info-card h3 {
+      font-size: 1rem;
+      margin-bottom: 18px;
+    }
+
+    .contact-detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .contact-detail:last-child { margin-bottom: 0; }
+
+    .contact-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: rgba(79,142,247,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .contact-detail-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .contact-detail-val {
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    /* ---- Consultation Types ---- */
+    .consult-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .consult-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+    }
+
+    .consult-option input[type="radio"] { accent-color: var(--blue); width: 16px; height: 16px; }
+
+    .consult-option:has(input:checked) {
+      border-color: var(--blue);
+      background: rgba(79,142,247,0.08);
+    }
+
+    /* ---- Form Card ---- */
+    .form-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 44px;
+    }
+
+    .form-card h2 { font-size: 1.5rem; margin-bottom: 8px; }
+    .form-card > p { color: var(--muted); font-size: 0.92rem; margin-bottom: 36px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+    }
+
+    .submit-btn:hover {
+      background: #ffe066;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(245,197,24,0.3);
+    }
+
+    .form-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    /* ---- Offices ---- */
+    .office-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+
+    .office-card:hover {
+      border-color: rgba(79,142,247,0.4);
+      transform: translateY(-4px);
+    }
+
+    .office-flag { font-size: 2rem; margin-bottom: 14px; }
+    .office-name { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+    .office-type { font-size: 0.72rem; color: var(--blue); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 14px; }
+    .office-addr { color: var(--muted); font-size: 0.88rem; line-height: 1.7; }
+
+    /* ---- Map Placeholder ---- */
+    .map-placeholder {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 50%, rgba(79,142,247,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 70% 50%, rgba(245,197,24,0.06) 0%, transparent 50%);
+    }
+
+    .map-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 20px rgba(79,142,247,0.8), 0 0 0 6px rgba(79,142,247,0.2);
+      position: absolute;
+    }
+
+    .map-dot::after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid rgba(79,142,247,0.4);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      animation: ping 2s cubic-bezier(0,0,0.2,1) infinite;
+    }
+
+    @keyframes ping {
+      75%, 100% { transform: translate(-50%,-50%) scale(2); opacity: 0; }
+    }
+
+    .map-label {
+      position: absolute;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      margin-top: 26px;
+      top: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @media (max-width: 900px) {
+      .contact-layout { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .form-card { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">NOVA<span>.</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="missions.html">Missions</a></li>
+        <li><a href="experience.html">Experience</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html" class="nav-cta active">Book Now</a></li>
+      </ul>
+      <div class="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="mobile-nav">
+      <a href="index.html">Home</a>
+      <a href="missions.html">Missions</a>
+      <a href="experience.html">Experience</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Book Now</a>
+    </div>
+  </nav>
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="container">
+      <div class="section-label">Start Your Journey</div>
+      <h1>Let's <span class="gradient-text">Connect</span></h1>
+      <div class="divider divider-center"></div>
+      <p>Whether you're ready to book or just beginning to explore the idea — we're here, and we'd love to talk.</p>
+    </div>
+  </div>
+
+  <!-- Contact Section -->
+  <section style="padding-top: 20px;">
+    <div class="container">
+      <div class="contact-layout">
+
+        <!-- Info Column -->
+        <div class="fade-up">
+
+          <div class="contact-info-card">
+            <h3>Get in Touch</h3>
+            <div class="contact-detail">
+              <div class="contact-icon">&#128222;</div>
+              <div>
+                <div class="contact-detail-label">Phone</div>
+                <div class="contact-detail-val">+1 (888) NOVA-FLY<br><small style="color:var(--muted);font-size:0.78rem;">Mon–Fri 8am–8pm PT</small></div>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-icon">&#128140;</div>
+              <div>
+                <div class="contact-detail-label">Email</div>
+                <div class="contact-detail-val">hello@nova.space<br><small style="color:var(--muted);font-size:0.78rem;">Replies within 4 hours</small></div>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-icon">&#127963;</div>
+              <div>
+                <div class="contact-detail-label">Headquarters</div>
+                <div class="contact-detail-val">1 Orbital Drive, Mojave, CA 93501<br><small style="color:var(--muted);font-size:0.78rem;">Visitor center open by appointment</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-info-card">
+            <h3>What Happens Next</h3>
+            <div style="display:flex;flex-direction:column;gap:16px;margin-top:8px;">
+              <div style="display:flex;gap:14px;align-items:flex-start;">
+                <div style="width:28px;height:28px;border-radius:50%;background:rgba(79,142,247,0.15);border:1px solid rgba(79,142,247,0.3);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:0.65rem;color:var(--blue);font-weight:700;flex-shrink:0;">1</div>
+                <div>
+                  <div style="font-size:0.9rem;font-weight:600;margin-bottom:4px;">We reach out within 24 hours</div>
+                  <div style="font-size:0.82rem;color:var(--muted);">A dedicated Mission Specialist will contact you to confirm your consultation time.</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:14px;align-items:flex-start;">
+                <div style="width:28px;height:28px;border-radius:50%;background:rgba(79,142,247,0.15);border:1px solid rgba(79,142,247,0.3);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:0.65rem;color:var(--blue);font-weight:700;flex-shrink:0;">2</div>
+                <div>
+                  <div style="font-size:0.9rem;font-weight:600;margin-bottom:4px;">Private 60-min consultation</div>
+                  <div style="font-size:0.82rem;color:var(--muted);">We learn about your goals and walk you through the right mission options — no sales pressure.</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:14px;align-items:flex-start;">
+                <div style="width:28px;height:28px;border-radius:50%;background:rgba(245,197,24,0.12);border:1px solid rgba(245,197,24,0.3);display:flex;align-items:center;justify-content:center;font-family:'Orbitron',sans-serif;font-size:0.65rem;color:var(--gold);font-weight:700;flex-shrink:0;">3</div>
+                <div>
+                  <div style="font-size:0.9rem;font-weight:600;margin-bottom:4px;">Reserve your seat</div>
+                  <div style="font-size:0.82rem;color:var(--muted);">When you're ready, a 10% refundable deposit secures your place in your chosen mission year.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-info-card">
+            <h3>Social &amp; Media</h3>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+              <a href="#" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg-card2);border:1px solid var(--border);border-radius:8px;font-size:0.82rem;color:var(--muted);transition:all 0.3s;text-decoration:none;" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--text)';" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)';">&#128081; Instagram</a>
+              <a href="#" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg-card2);border:1px solid var(--border);border-radius:8px;font-size:0.82rem;color:var(--muted);transition:all 0.3s;text-decoration:none;" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--text)';" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)';">&#129422; LinkedIn</a>
+              <a href="#" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg-card2);border:1px solid var(--border);border-radius:8px;font-size:0.82rem;color:var(--muted);transition:all 0.3s;text-decoration:none;" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--text)';" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)';">&#127909; YouTube</a>
+              <a href="#" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--bg-card2);border:1px solid var(--border);border-radius:8px;font-size:0.82rem;color:var(--muted);transition:all 0.3s;text-decoration:none;" onmouseover="this.style.borderColor='var(--blue)';this.style.color='var(--text)';" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)';">&#128038; X / Twitter</a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Form Column -->
+        <div class="fade-up" style="transition-delay: 0.2s;">
+          <div class="form-card">
+            <h2>Reserve Your Consultation</h2>
+            <p>Tell us a bit about yourself and which mission interests you most. All inquiries are treated with complete discretion.</p>
+
+            <form id="contact-form" novalidate>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="fname">First Name</label>
+                  <input type="text" id="fname" name="fname" placeholder="Elena" required />
+                </div>
+                <div class="form-group">
+                  <label for="lname">Last Name</label>
+                  <input type="text" id="lname" name="lname" placeholder="Vasquez" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="email">Email Address</label>
+                  <input type="email" id="email" name="email" placeholder="hello@example.com" required />
+                </div>
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>I'm Interested In</label>
+                <div class="consult-options">
+                  <label class="consult-option">
+                    <input type="radio" name="mission" value="suborbital" checked />
+                    <div>
+                      <strong>Suborbital Arc</strong> — from $250,000 &nbsp;
+                      <span class="badge badge-green" style="font-size:0.62rem;">Available Now</span>
+                    </div>
+                  </label>
+                  <label class="consult-option">
+                    <input type="radio" name="mission" value="orbital" />
+                    <div>
+                      <strong>Orbital Retreat</strong> — from $1.8M &nbsp;
+                      <span class="badge badge-blue" style="font-size:0.62rem;">7 Days</span>
+                    </div>
+                  </label>
+                  <label class="consult-option">
+                    <input type="radio" name="mission" value="lunar" />
+                    <div>
+                      <strong>Lunar Passage</strong> — from $12M &nbsp;
+                      <span class="badge badge-gold" style="font-size:0.62rem;">Limited</span>
+                    </div>
+                  </label>
+                  <label class="consult-option">
+                    <input type="radio" name="mission" value="charter" />
+                    <div>
+                      <strong>Private Charter</strong> — Custom pricing
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="timeline">Preferred Launch Window</label>
+                <select id="timeline" name="timeline">
+                  <option value="">Select a timeframe</option>
+                  <option value="2026">2026 (if available)</option>
+                  <option value="2027-h1">2027 — First Half</option>
+                  <option value="2027-h2">2027 — Second Half</option>
+                  <option value="2028">2028 or Later</option>
+                  <option value="flexible">Flexible / Not Sure Yet</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="message">Tell Us About Yourself <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+                <textarea id="message" name="message" rows="4" placeholder="What draws you to space? Any questions you'd like answered in your consultation? Any relevant health or schedule considerations?"></textarea>
+              </div>
+
+              <div class="form-group" style="margin-bottom:28px;">
+                <label style="display:flex;align-items:flex-start;gap:12px;text-transform:none;letter-spacing:0;font-size:0.85rem;color:var(--muted);font-weight:400;cursor:pointer;">
+                  <input type="checkbox" required style="width:16px;height:16px;flex-shrink:0;margin-top:2px;accent-color:var(--blue);" />
+                  I agree to NOVA's Privacy Policy and understand that my information will be used solely for consultation purposes and kept strictly confidential.
+                </label>
+              </div>
+
+              <button type="submit" class="submit-btn">Send Message &nbsp;&#8599;</button>
+
+              <div class="form-note">
+                &#128274; Your information is encrypted and never shared with third parties.<br>
+                Expect a response from your Mission Specialist within 24 hours.
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Global Offices -->
+  <section style="background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="container">
+      <div class="text-center fade-up" style="margin-bottom: 48px;">
+        <div class="section-label">Where to Find Us</div>
+        <h2 class="section-title">Global Offices &amp; Launch Sites</h2>
+        <div class="divider divider-center"></div>
+      </div>
+
+      <!-- Map -->
+      <div class="map-placeholder fade-up" style="margin-bottom: 40px;">
+        <div class="map-dot" style="top: 48%; left: 20%;"></div>
+        <div style="position:absolute;top:calc(48% + 18px);left:20%;transform:translateX(-50%);font-size:0.62rem;color:var(--blue);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;">Mojave HQ</div>
+
+        <div class="map-dot" style="top: 38%; left: 46%; background: var(--gold); box-shadow: 0 0 20px rgba(245,197,24,0.8), 0 0 0 6px rgba(245,197,24,0.2);"></div>
+        <div style="position:absolute;top:calc(38% + 18px);left:46%;transform:translateX(-50%);font-size:0.62rem;color:var(--gold);font-weight:700;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;">London Office</div>
+
+        <div class="map-dot" style="top: 55%; left: 55%; background: #34d399; box-shadow: 0 0 20px rgba(52,211,153,0.8), 0 0 0 6px rgba(52,211,153,0.2);"></div>
+        <div style="position:absolute;top:calc(55% + 18px);left:55%;transform:translateX(-50%);font-size:0.62rem;color:#34d399;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;">Dubai Office</div>
+
+        <div class="map-dot" style="top: 70%; left: 32%; background: #a855f7; box-shadow: 0 0 20px rgba(168,85,247,0.8), 0 0 0 6px rgba(168,85,247,0.2);"></div>
+        <div style="position:absolute;top:calc(70% + 18px);left:32%;transform:translateX(-50%);font-size:0.62rem;color:#a855f7;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;">Atacama (Under Construction)</div>
+      </div>
+
+      <div class="grid-4 stagger-children">
+
+        <div class="office-card">
+          <div class="office-flag">&#127482;&#127480;</div>
+          <div class="office-name">Mojave Spaceport</div>
+          <div class="office-type">Global HQ &amp; Launch Site</div>
+          <div class="office-addr">1 Orbital Drive<br>Mojave, CA 93501<br>United States</div>
+        </div>
+
+        <div class="office-card">
+          <div class="office-flag">&#127468;&#127463;</div>
+          <div class="office-name">London Office</div>
+          <div class="office-type">European Reservations</div>
+          <div class="office-addr">12 Belgravia Square<br>London, SW1X 8AJ<br>United Kingdom</div>
+        </div>
+
+        <div class="office-card">
+          <div class="office-flag">&#127462;&#127466;</div>
+          <div class="office-name">Dubai Office</div>
+          <div class="office-type">MENA &amp; Asia-Pacific</div>
+          <div class="office-addr">One Za'abeel Tower<br>Level 48, Dubai<br>United Arab Emirates</div>
+        </div>
+
+        <div class="office-card">
+          <div class="office-flag">&#127464;&#127473;</div>
+          <div class="office-name">Atacama Spaceport</div>
+          <div class="office-type">Under Construction — 2028</div>
+          <div class="office-addr">Atacama Desert<br>Antofagasta Region<br>Chile</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section>
+    <div class="container">
+      <div style="text-align:center;" class="fade-up">
+        <div class="section-label">No Obligation</div>
+        <h2 class="section-title" style="max-width:600px;margin:0 auto 20px;">The First Conversation Is Always Free</h2>
+        <div class="divider divider-center"></div>
+        <p style="color:var(--muted);max-width:520px;margin:0 auto 36px;font-size:1.05rem;line-height:1.8;">Whether you're seriously ready to book or just curious what space tourism actually involves — our Mission Specialists love talking to people at every stage of the journey.</p>
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+          <a href="#contact-form" class="btn btn-primary">Book a Consultation &#8599;</a>
+          <a href="missions.html" class="btn btn-secondary">Browse Missions</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">NOVA<span>.</span></a>
+          <p>The world's premier space tourism company. Redefining what it means to explore — one orbit at a time.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="missions.html">Missions</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="about.html#team">Team</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="contact.html">Book a Consultation</a></li>
+            <li><a href="#">hello@nova.space</a></li>
+            <li><a href="#">+1 (888) NOVA-FLY</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 NOVA Space Tourism, Inc. All rights reserved.</span>
+        <span>Privacy Policy &nbsp;|&nbsp; Terms of Service &nbsp;|&nbsp; Safety Standards</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
