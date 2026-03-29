@@ -68,5 +68,9 @@ def check_status(job_id):
 def serve_clip(job_id, filename):
     return send_from_directory(f'clips/{job_id}', filename)
 
+@app.route('/lawn')
+def lawn():
+    return render_template("lawn757.html")
+
 # Note: Removed app.run() to avoid SystemExit in restricted/sandboxed environments.
 # To run the server externally, use: `flask run` from command line or appropriate entry point.
