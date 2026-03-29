@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>757 Lawn Pro — Hampton Roads Lawn Care</title>
+  <meta name="description" content="Professional lawn care serving Virginia Beach, Norfolk, Chesapeake, Hampton & Newport News. Get a free quote in 60 seconds." />
+  <style>
+    /* ── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --green:   #2d6a2d;
+      --green2:  #3d8b3d;
+      --lime:    #7ec53b;
+      --dark:    #1a1a1a;
+      --gray:    #f5f5f0;
+      --mid:     #666;
+      --white:   #ffffff;
+      --radius:  12px;
+      --shadow:  0 4px 24px rgba(0,0,0,.12);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: var(--dark);
+      background: var(--white);
+      line-height: 1.6;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Sticky Mobile Phone Bar (Shortcut Tunnel) ────────────── */
+    .sticky-bar {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--green);
+      padding: 14px 20px;
+      z-index: 999;
+      text-align: center;
+    }
+    .sticky-bar a {
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+    }
+    @media (max-width: 768px) { .sticky-bar { display: block; } }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--white);
+      border-bottom: 1px solid #e8e8e8;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--green);
+    }
+    .nav-logo span { color: var(--lime); }
+    .nav-phone {
+      background: var(--green);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: .9rem;
+      transition: background .2s;
+    }
+    .nav-phone:hover { background: var(--green2); }
+
+    /* ── Hero ─────────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #1b4d1b 0%, #2d6a2d 50%, #3a7d3a 100%);
+      color: #fff;
+      padding: 80px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(126,197,59,.2);
+      border: 1px solid rgba(126,197,59,.5);
+      color: var(--lime);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.15;
+      max-width: 720px;
+      margin: 0 auto 16px;
+    }
+    .hero h1 span { color: var(--lime); }
+    .hero p {
+      font-size: 1.1rem;
+      opacity: .85;
+      max-width: 520px;
+      margin: 0 auto 32px;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: var(--lime);
+      color: var(--dark);
+      font-weight: 800;
+      font-size: 1.1rem;
+      padding: 16px 36px;
+      border-radius: 999px;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 6px 24px rgba(126,197,59,.4);
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(126,197,59,.5); }
+
+    /* Trust signal directly under CTA (Absorption Tunnel) */
+    .hero-trust {
+      margin-top: 16px;
+      font-size: .85rem;
+      opacity: .75;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .stars { color: #f5c518; letter-spacing: 2px; }
+
+    /* ── Social Proof Strip ───────────────────────────────────── */
+    .proof-strip {
+      background: var(--gray);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      font-size: .9rem;
+      color: var(--mid);
+      font-weight: 600;
+    }
+    .proof-strip strong { color: var(--dark); }
+
+    /* ── Services ─────────────────────────────────────────────── */
+    section { padding: 72px 24px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      text-align: center;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: 48px;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    .service-card {
+      background: var(--white);
+      border: 1.5px solid #e5ede5;
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .service-card:hover { border-color: var(--lime); box-shadow: var(--shadow); }
+    .service-icon { font-size: 2.2rem; margin-bottom: 12px; }
+    .service-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .service-card p { font-size: .85rem; color: var(--mid); }
+
+    /* ── Pricing ──────────────────────────────────────────────── */
+    .pricing-bg { background: var(--gray); }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .price-card {
+      background: var(--white);
+      border: 2px solid #e0e8e0;
+      border-radius: var(--radius);
+      padding: 36px 28px;
+      position: relative;
+      transition: box-shadow .2s;
+    }
+    .price-card:hover { box-shadow: var(--shadow); }
+    .price-card.featured {
+      border-color: var(--lime);
+      box-shadow: 0 0 0 4px rgba(126,197,59,.15);
+    }
+    .featured-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--lime);
+      color: var(--dark);
+      font-size: .75rem;
+      font-weight: 800;
+      padding: 4px 16px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .price-tier { font-size: .8rem; font-weight: 700; color: var(--mid); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+    .price-amount { font-size: 2.4rem; font-weight: 900; color: var(--green); line-height: 1; }
+    .price-amount sup { font-size: 1.2rem; vertical-align: super; }
+    .price-freq { font-size: .85rem; color: var(--mid); margin-bottom: 20px; }
+    .price-features { list-style: none; margin-bottom: 28px; }
+    .price-features li { padding: 7px 0; font-size: .9rem; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 8px; }
+    .price-features li::before { content: '✓'; color: var(--lime); font-weight: 900; }
+    .price-btn {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: .95rem;
+      transition: background .2s, color .2s;
+      border: 2px solid var(--green);
+      color: var(--green);
+    }
+    .price-card.featured .price-btn {
+      background: var(--green);
+      color: #fff;
+    }
+    .price-btn:hover { background: var(--green); color: #fff; }
+
+    /* ── Testimonials ─────────────────────────────────────────── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .testimonial {
+      background: var(--white);
+      border: 1.5px solid #e5ede5;
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+    .t-stars { color: #f5c518; font-size: 1.1rem; margin-bottom: 12px; }
+    .t-text { font-size: .95rem; color: #444; font-style: italic; margin-bottom: 16px; line-height: 1.65; }
+    .t-author { font-weight: 700; font-size: .85rem; }
+    .t-location { font-size: .8rem; color: var(--mid); }
+
+    /* ── Quote Form (Collapse Tunnel — 4 fields only) ─────────── */
+    .form-bg { background: var(--green); color: #fff; }
+    .form-bg .section-title { color: #fff; }
+    .form-bg .section-label { color: var(--lime); }
+    .quote-form {
+      max-width: 640px;
+      margin: 0 auto;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 16px;
+      padding: 40px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 540px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: rgba(255,255,255,.85);
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 8px;
+      border: 1.5px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.1);
+      color: #fff;
+      font-size: .95rem;
+      outline: none;
+      transition: border-color .2s, background .2s;
+    }
+    .form-group input::placeholder { color: rgba(255,255,255,.45); }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--lime);
+      background: rgba(255,255,255,.15);
+    }
+    .form-group select option { background: var(--green); color: #fff; }
+
+    /* Visual lawn size picker (Absorption Tunnel) */
+    .size-picker { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 4px; }
+    .size-option { display: none; }
+    .size-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 8px;
+      border-radius: 8px;
+      border: 1.5px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.08);
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      font-size: .8rem;
+      text-align: center;
+    }
+    .size-label .size-icon { font-size: 1.5rem; }
+    .size-label .size-name { font-weight: 700; }
+    .size-label .size-desc { opacity: .65; font-size: .72rem; }
+    .size-option:checked + .size-label {
+      border-color: var(--lime);
+      background: rgba(126,197,59,.2);
+    }
+
+    .form-submit {
+      width: 100%;
+      background: var(--lime);
+      color: var(--dark);
+      font-size: 1rem;
+      font-weight: 800;
+      padding: 16px;
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 4px 20px rgba(126,197,59,.3);
+    }
+    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(126,197,59,.45); }
+    .form-note {
+      text-align: center;
+      font-size: .78rem;
+      opacity: .6;
+      margin-top: 12px;
+    }
+
+    /* Success message */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 32px;
+    }
+    .form-success .check { font-size: 3rem; margin-bottom: 12px; }
+    .form-success h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 8px; }
+    .form-success p { opacity: .8; }
+
+    /* ── Areas ────────────────────────────────────────────────── */
+    .areas-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 32px;
+    }
+    .area-tag {
+      background: var(--gray);
+      border: 1.5px solid #dde8dd;
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--green);
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      color: rgba(255,255,255,.65);
+      padding: 40px 24px;
+      text-align: center;
+      font-size: .85rem;
+    }
+    footer strong { color: #fff; }
+    footer a { color: var(--lime); }
+    .footer-phone { font-size: 1.3rem; font-weight: 800; color: #fff; margin: 8px 0; display: block; }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .text-center { text-align: center; }
+    @media (max-width: 768px) {
+      section { padding: 56px 16px; }
+      .quote-form { padding: 28px 20px; }
+      body { padding-bottom: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sticky Mobile CTA (Shortcut Tunnel) -->
+<div class="sticky-bar">
+  <a href="tel:+17575550100">📞 Call Now — Free Quote: (757) 555-0100</a>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">757<span>Lawn</span>Pro</div>
+  <a href="tel:+17575550100" class="nav-phone">📞 (757) 555-0100</a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-badge">Serving Hampton Roads Since 2011</div>
+  <h1>Your Lawn, <span>Locked In.</span><br>We Handle the Rest.</h1>
+  <p>Professional lawn care for Virginia Beach, Norfolk, Chesapeake, Hampton &amp; Newport News. Weekly, bi-weekly, or one-time service.</p>
+  <a href="#quote" class="hero-cta">Get My Free Quote →</a>
+  <!-- Trust signal embedded under CTA (Absorption Tunnel) -->
+  <div class="hero-trust">
+    <span class="stars">★★★★★</span>
+    <span>4.9 stars · 500+ lawns in 757 · No contracts</span>
+  </div>
+</section>
+
+<!-- Social Proof Strip -->
+<div class="proof-strip">
+  <span><strong>500+</strong> Happy Customers</span>
+  <span><strong>4.9★</strong> Google Rating</span>
+  <span><strong>Same-Week</strong> Availability</span>
+  <span><strong>Licensed</strong> &amp; Insured in VA</span>
+  <span><strong>No</strong> Long-Term Contracts</span>
+</div>
+
+<!-- Services -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">What We Do</div>
+    <h2 class="section-title">Full-Service Lawn Care for Hampton Roads</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">🌿</div>
+        <h3>Lawn Mowing</h3>
+        <p>Precision cuts, clean lines, every visit — weekly or bi-weekly.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">✂️</div>
+        <h3>Edging &amp; Trimming</h3>
+        <p>Sharp borders along driveways, beds, and walkways.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🌱</div>
+        <h3>Fertilization</h3>
+        <p>Seasonal programs tuned to Hampton Roads' clay-heavy soil.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🍂</div>
+        <h3>Leaf Removal</h3>
+        <p>Full cleanup before and after fall. No leaf left behind.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔵</div>
+        <h3>Aeration</h3>
+        <p>Core aeration to break up compacted 757 soil and thicken turf.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🌊</div>
+        <h3>Storm Cleanup</h3>
+        <p>Fast debris removal after coastal storms and high-wind events.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="pricing-bg">
+  <div class="section-inner">
+    <div class="section-label">Transparent Pricing</div>
+    <h2 class="section-title">Simple Plans. No Surprises.</h2>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">Basic</div>
+        <div class="price-amount"><sup>$</sup>39</div>
+        <div class="price-freq">per visit · up to 5,000 sq ft</div>
+        <ul class="price-features">
+          <li>Mow, edge &amp; blow</li>
+          <li>Weekly or bi-weekly</li>
+          <li>Online scheduling</li>
+          <li>No contract required</li>
+        </ul>
+        <a href="#quote" class="price-btn">Get This Plan</a>
+      </div>
+      <div class="price-card featured">
+        <div class="featured-badge">Most Popular</div>
+        <div class="price-tier">Standard</div>
+        <div class="price-amount"><sup>$</sup>59</div>
+        <div class="price-freq">per visit · up to 10,000 sq ft</div>
+        <ul class="price-features">
+          <li>Everything in Basic</li>
+          <li>Bed edging included</li>
+          <li>Seasonal fertilization</li>
+          <li>Priority scheduling</li>
+        </ul>
+        <a href="#quote" class="price-btn">Get This Plan</a>
+      </div>
+      <div class="price-card">
+        <div class="price-tier">Premium</div>
+        <div class="price-amount"><sup>$</sup>89</div>
+        <div class="price-freq">per visit · up to 20,000 sq ft</div>
+        <ul class="price-features">
+          <li>Everything in Standard</li>
+          <li>Annual aeration</li>
+          <li>Leaf removal included</li>
+          <li>Storm cleanup credits</li>
+        </ul>
+        <a href="#quote" class="price-btn">Get This Plan</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section>
+  <div class="section-inner">
+    <div class="section-label">Real Customers</div>
+    <h2 class="section-title">757 Homeowners Love Their Lawns</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"These guys show up every single week, on time, and my yard looks better than my neighbor's who pays way more. Couldn't ask for better service in VB."</p>
+        <div class="t-author">Marcus T.</div>
+        <div class="t-location">Virginia Beach, VA</div>
+      </div>
+      <div class="testimonial">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"After a couple bad experiences with other companies canceling on us, 757 Lawn Pro has been rock solid for 2 years. They even did a same-day cleanup after the last storm."</p>
+        <div class="t-author">Keisha R.</div>
+        <div class="t-location">Chesapeake, VA</div>
+      </div>
+      <div class="testimonial">
+        <div class="t-stars">★★★★★</div>
+        <p class="t-text">"The fertilization program made a huge difference. My lawn was always patchy near the back — this spring it finally looks full and green. Worth every penny."</p>
+        <div class="t-author">Dave &amp; Lisa M.</div>
+        <div class="t-location">Norfolk, VA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quote Form — Collapsed to 4 fields (Collapse Tunnel) -->
+<section class="form-bg" id="quote">
+  <div class="section-inner">
+    <div class="section-label">Free Quote</div>
+    <h2 class="section-title">Get Your Price in 60 Seconds</h2>
+    <div class="quote-form">
+      <div id="formBody">
+        <form id="quoteForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">Your Name</label>
+              <input type="text" id="fname" name="name" placeholder="First &amp; Last" required />
+            </div>
+            <div class="form-group">
+              <label for="fphone">Phone Number</label>
+              <input type="tel" id="fphone" name="phone" placeholder="(757) 555-0000" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fzip">ZIP Code</label>
+            <input type="text" id="fzip" name="zip" placeholder="23451" maxlength="5" required />
+          </div>
+          <div class="form-group">
+            <label for="fservice">Service Needed</label>
+            <select id="fservice" name="service" required>
+              <option value="" disabled selected>Select a service...</option>
+              <option>Lawn Mowing</option>
+              <option>Edging &amp; Trimming</option>
+              <option>Fertilization</option>
+              <option>Leaf Removal</option>
+              <option>Aeration</option>
+              <option>Storm Cleanup</option>
+              <option>Full Service Plan</option>
+            </select>
+          </div>
+
+          <!-- Visual Lawn Size Picker (Absorption Tunnel) -->
+          <div class="form-group">
+            <label>Lawn Size</label>
+            <div class="size-picker">
+              <div>
+                <input type="radio" name="lawnsize" id="sz-s" value="small" class="size-option" required />
+                <label for="sz-s" class="size-label">
+                  <span class="size-icon">🏠</span>
+                  <span class="size-name">Small</span>
+                  <span class="size-desc">Under 5,000 sq ft</span>
+                </label>
+              </div>
+              <div>
+                <input type="radio" name="lawnsize" id="sz-m" value="medium" class="size-option" />
+                <label for="sz-m" class="size-label">
+                  <span class="size-icon">🏡</span>
+                  <span class="size-name">Medium</span>
+                  <span class="size-desc">5,000–10,000 sq ft</span>
+                </label>
+              </div>
+              <div>
+                <input type="radio" name="lawnsize" id="sz-l" value="large" class="size-option" />
+                <label for="sz-l" class="size-label">
+                  <span class="size-icon">🏘️</span>
+                  <span class="size-name">Large</span>
+                  <span class="size-desc">Over 10,000 sq ft</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="form-submit">Send My Free Quote Request →</button>
+          <p class="form-note">No spam. No contracts. We'll call or text within 2 hours.</p>
+        </form>
+      </div>
+
+      <!-- Success State (9-layer: Resolution/Reward) -->
+      <div class="form-success" id="formSuccess">
+        <div class="check">✅</div>
+        <h3>Quote Request Received!</h3>
+        <p>We'll call or text you within 2 hours to confirm pricing and availability in your area.</p>
+        <p style="margin-top:12px; opacity:.7;">Questions? Call us now: <a href="tel:+17575550100" style="color:var(--lime); font-weight:700;">(757) 555-0100</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Service Areas -->
+<section>
+  <div class="section-inner text-center">
+    <div class="section-label">Service Area</div>
+    <h2 class="section-title">Proudly Serving All of Hampton Roads</h2>
+    <p style="color:var(--mid); max-width:500px; margin:0 auto;">If you're in the 757, we're in your neighborhood. We service all major cities and surrounding communities.</p>
+    <div class="areas-list">
+      <span class="area-tag">Virginia Beach</span>
+      <span class="area-tag">Norfolk</span>
+      <span class="area-tag">Chesapeake</span>
+      <span class="area-tag">Hampton</span>
+      <span class="area-tag">Newport News</span>
+      <span class="area-tag">Suffolk</span>
+      <span class="area-tag">Portsmouth</span>
+      <span class="area-tag">Poquoson</span>
+      <span class="area-tag">Yorktown</span>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <strong>757 Lawn Pro</strong>
+  <a href="tel:+17575550100" class="footer-phone">(757) 555-0100</a>
+  <p>Licensed &amp; Insured · Virginia Beach, VA · Serving all of Hampton Roads</p>
+  <p style="margin-top:16px;"><a href="#quote">Get a Free Quote</a> · <a href="tel:+17575550100">Call Us</a></p>
+  <p style="margin-top:20px; font-size:.75rem; opacity:.4;">© 2025 757 Lawn Pro. All rights reserved.</p>
+</footer>
+
+<script>
+  // Phone number formatting
+  const phoneInput = document.getElementById('fphone');
+  phoneInput.addEventListener('input', function () {
+    let val = this.value.replace(/\D/g, '').slice(0, 10);
+    if (val.length >= 7) val = `(${val.slice(0,3)}) ${val.slice(3,6)}-${val.slice(6)}`;
+    else if (val.length >= 4) val = `(${val.slice(0,3)}) ${val.slice(3)}`;
+    else if (val.length > 0) val = `(${val}`;
+    this.value = val;
+  });
+
+  // ZIP — numbers only
+  document.getElementById('fzip').addEventListener('input', function () {
+    this.value = this.value.replace(/\D/g, '').slice(0, 5);
+  });
+
+  // Form submit → show success state (9-layer reward)
+  document.getElementById('quoteForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = document.getElementById('fname').value.trim();
+    const phone = document.getElementById('fphone').value.trim();
+    const zip = document.getElementById('fzip').value.trim();
+    const service = document.getElementById('fservice').value;
+    const size = document.querySelector('input[name="lawnsize"]:checked');
+
+    if (!name || !phone || zip.length < 5 || !service || !size) {
+      // Highlight empty fields without a blocking modal (Absorption Tunnel)
+      [document.getElementById('fname'), document.getElementById('fphone'),
+       document.getElementById('fzip'), document.getElementById('fservice')]
+        .forEach(el => {
+          if (!el.value.trim()) el.style.borderColor = '#ff6b6b';
+          else el.style.borderColor = '';
+        });
+      if (!size) document.querySelector('.size-picker').style.outline = '2px solid #ff6b6b';
+      return;
+    }
+
+    // Swap to success state
+    document.getElementById('formBody').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  });
+
+  // Remove error highlights on input
+  document.querySelectorAll('.form-group input, .form-group select').forEach(el => {
+    el.addEventListener('input', () => { el.style.borderColor = ''; });
+  });
+  document.querySelectorAll('.size-option').forEach(el => {
+    el.addEventListener('change', () => {
+      document.querySelector('.size-picker').style.outline = '';
+    });
+  });
+</script>
+
+</body>
+</html>
