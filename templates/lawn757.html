@@ -36,6 +36,8 @@
       bottom: 0; left: 0; right: 0;
       background: var(--green);
       padding: 14px 20px;
+      /* Safe area for iPhone home indicator */
+      padding-bottom: calc(14px + env(safe-area-inset-bottom));
       z-index: 999;
       text-align: center;
     }
@@ -44,6 +46,8 @@
       font-size: 1rem;
       font-weight: 700;
       letter-spacing: .03em;
+      /* Remove 300ms tap delay */
+      touch-action: manipulation;
     }
     @media (max-width: 768px) { .sticky-bar { display: block; } }
 
@@ -301,9 +305,13 @@
       border: 1.5px solid rgba(255,255,255,.2);
       background: rgba(255,255,255,.1);
       color: #fff;
-      font-size: .95rem;
+      font-size: 16px; /* Prevents iOS auto-zoom on focus */
       outline: none;
       transition: border-color .2s, background .2s;
+      /* Normalize iOS select appearance */
+      -webkit-appearance: none;
+      appearance: none;
+      min-height: 48px; /* 44px+ touch target */
     }
     .form-group input::placeholder { color: rgba(255,255,255,.45); }
     .form-group input:focus,
@@ -345,14 +353,17 @@
       font-size: 1rem;
       font-weight: 800;
       padding: 16px;
+      min-height: 52px; /* solid tap target */
       border: none;
       border-radius: 999px;
       cursor: pointer;
       margin-top: 8px;
       transition: transform .15s, box-shadow .15s;
       box-shadow: 0 4px 20px rgba(126,197,59,.3);
+      touch-action: manipulation;
     }
     .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(126,197,59,.45); }
+    .form-submit:active { transform: scale(.98); }
     .form-note {
       text-align: center;
       font-size: .78rem;
@@ -402,10 +413,89 @@
 
     /* ── Utility ──────────────────────────────────────────────── */
     .text-center { text-align: center; }
+
+    /* ── Mobile — tablets & phones ───────────────────────────── */
     @media (max-width: 768px) {
-      section { padding: 56px 16px; }
-      .quote-form { padding: 28px 20px; }
-      body { padding-bottom: 60px; }
+      section { padding: 48px 16px; }
+      .quote-form { padding: 24px 16px; }
+      /* Extra bottom padding so sticky bar never overlaps content */
+      body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+
+      /* Hide nav call button — sticky bar already handles it */
+      .nav-phone { display: none; }
+
+      /* Hero: tighter vertical rhythm */
+      .hero { padding: 52px 20px 44px; }
+      /* Full-width CTA = bigger tap target */
+      .hero-cta { display: block; width: 100%; text-align: center; box-sizing: border-box; }
+      /* Trust line wraps cleanly */
+      .hero-trust { flex-wrap: wrap; gap: 4px 8px; justify-content: center; }
+
+      /* Proof strip: 2-column grid instead of overflowing row */
+      .proof-strip {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px 8px;
+        padding: 20px 16px;
+        text-align: center;
+        font-size: .85rem;
+      }
+
+      /* Services: 2 columns on mobile */
+      .services-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .service-card { padding: 20px 14px; }
+
+      /* Pricing: horizontal snap scroll — show 1.15 cards to hint scroll */
+      .pricing-grid {
+        grid-template-columns: repeat(3, 80vw);
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 8px;
+        gap: 16px;
+      }
+      .pricing-grid::-webkit-scrollbar { display: none; }
+      .price-card { scroll-snap-align: start; flex-shrink: 0; }
+
+      /* Testimonials: horizontal snap scroll */
+      .testimonials-grid {
+        grid-template-columns: repeat(3, 85vw);
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 16px;
+      }
+      .testimonials-grid::-webkit-scrollbar { display: none; }
+      .testimonial { scroll-snap-align: start; }
+
+      /* Section title: less bottom margin */
+      .section-title { margin-bottom: 28px; }
+
+      /* Area tags: ensure tap target height */
+      .area-tag { min-height: 40px; display: inline-flex; align-items: center; }
+    }
+
+    /* ── Small phones (≤ 480px) ───────────────────────────────── */
+    @media (max-width: 480px) {
+      nav { padding: 0 16px; }
+      .nav-logo { font-size: 1.1rem; }
+
+      /* ZIP + service side by side to save vertical space */
+      .form-zip-service { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .form-zip-service .form-group { margin-bottom: 0; }
+
+      /* Size picker: touch-friendly padding */
+      .size-label { padding: 14px 4px; min-height: 80px; justify-content: center; }
+      .size-label .size-icon { font-size: 1.8rem; }
+
+      /* Area tags: smaller text */
+      .areas-list { gap: 8px; }
+      .area-tag { font-size: .82rem; padding: 7px 12px; }
+
+      /* Hero text tighter */
+      .hero p { font-size: 1rem; }
     }
   </style>
 </head>
@@ -577,6 +667,7 @@
               <input type="tel" id="fphone" name="phone" placeholder="(757) 555-0000" required />
             </div>
           </div>
+          <div class="form-zip-service">
           <div class="form-group">
             <label for="fzip">ZIP Code</label>
             <input type="text" id="fzip" name="zip" placeholder="23451" maxlength="5" required />
@@ -594,6 +685,7 @@
               <option>Full Service Plan</option>
             </select>
           </div>
+          </div><!-- /form-zip-service -->
 
           <!-- Visual Lawn Size Picker (Absorption Tunnel) -->
           <div class="form-group">
