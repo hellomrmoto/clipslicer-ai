@@ -76,8 +76,8 @@ export default function VendorOrderActions({ order }: { order: any }) {
       <div className="pt-3 border-t border-gray-100 space-y-3">
         <p className="text-sm font-medium text-gray-700">Verify delivery to complete order & receive tokens</p>
 
-        {/* OTP fallback */}
-        {order.payment_method === 'cash' || true ? (
+        {/* OTP code entry */}
+        {order.status === 'ready' ? (
           <div className="flex gap-2">
             <input
               type="text"

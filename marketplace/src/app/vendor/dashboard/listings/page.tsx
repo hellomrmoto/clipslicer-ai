@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import Image from 'next/image'
 import Card from '@/components/ui/Card'
 import ToggleListingButton from './ToggleListingButton'
 
@@ -26,7 +27,15 @@ export default async function VendorListingsPage() {
       {listings && listings.length > 0 ? (
         <div className="flex flex-col gap-4">
           {listings.map(listing => (
-            <Card key={listing.id} className="p-5 flex items-center justify-between gap-4">
+            <Card key={listing.id} className="p-5 flex items-center gap-4">
+              {/* Thumbnail */}
+              <div className="w-16 h-16 rounded-xl overflow-hidden bg-orange-100 shrink-0 relative">
+                {listing.image_url ? (
+                  <Image src={listing.image_url} alt={listing.title} fill className="object-cover" unoptimized />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center text-2xl">🍽️</div>
+                )}
+              </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2">
                   <h3 className="font-semibold text-gray-900">{listing.title}</h3>

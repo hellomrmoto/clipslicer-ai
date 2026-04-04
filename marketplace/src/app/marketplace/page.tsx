@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import Image from 'next/image'
 import Card from '@/components/ui/Card'
 import SideDrawer from '@/components/layout/SideDrawer'
 
@@ -92,9 +93,13 @@ export default async function MarketplacePage({
               {listings.map(listing => (
                 <Link key={listing.id} href={`/marketplace/${listing.id}`}>
                   <Card className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer h-full">
-                    {/* Image placeholder */}
-                    <div className="h-40 bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
-                      <span className="text-4xl">🍽️</span>
+                    {/* Food image */}
+                    <div className="h-40 relative bg-gradient-to-br from-orange-100 to-orange-200">
+                      {listing.image_url ? (
+                        <Image src={listing.image_url} alt={listing.title} fill className="object-cover" unoptimized />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center text-4xl">🍽️</div>
+                      )}
                     </div>
                     <div className="p-4">
                       <h3 className="font-semibold text-gray-900">{listing.title}</h3>

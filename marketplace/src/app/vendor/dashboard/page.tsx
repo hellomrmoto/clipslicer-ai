@@ -1,12 +1,20 @@
 import { createClient } from '@/lib/supabase/server'
+import { getWeeklyEarnings, getWeeklyOrders } from '@/lib/analytics'
 import Card from '@/components/ui/Card'
+import { AreaChartWidget, BarChartWidget } from '@/components/ui/SimpleChart'
 import Link from 'next/link'
 
 export default async function VendorOverviewPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  const [{ data: vendor }, { data: wallet }, { data: recentOrders }] = await Promise.all([
+  const [
+    { data: vendor },
+    { data: wallet },
+    { data: recentOrders },
+    weeklyEarnings,
+    weeklyOrders,
+  ] = await Promise.all([
     supabase.from('vendor_profiles').select('*, profiles(full_name)').eq('id', user!.id).single(),
     supabase.from('wallets').select('balance').eq('user_id', user!.id).single(),
     supabase.from('orders')
@@ -14,10 +22,13 @@ export default async function VendorOverviewPage() {
       .eq('vendor_id', user!.id)
       .order('created_at', { ascending: false })
       .limit(5),
+    getWeeklyEarnings(supabase, user!.id),
+    getWeeklyOrders(supabase, user!.id),
   ])
 
   const pendingCount = recentOrders?.filter(o => o.status === 'pending').length ?? 0
   const balance = wallet?.balance ?? 0
+  const totalEarned = weeklyEarnings.reduce((s, w) => s + w.tokens, 0)
 
   return (
     <div className="max-w-4xl space-y-6">
@@ -54,6 +65,35 @@ export default async function VendorOverviewPage() {
           className="border border-gray-300 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium hover:bg-gray-50">
           Edit Profile
         </Link>
+      </div>
+
+      {/* Analytics charts */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-gray-900">Earnings</h2>
+            <span className="text-xs text-gray-400">{totalEarned} tokens last 8 wks</span>
+          </div>
+          <AreaChartWidget
+            data={weeklyEarnings}
+            xKey="week"
+            valueKey="tokens"
+            label="tokens"
+          />
+        </Card>
+
+        <Card className="p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-gray-900">Orders</h2>
+            <span className="text-xs text-gray-400">last 8 weeks</span>
+          </div>
+          <BarChartWidget
+            data={weeklyOrders}
+            xKey="week"
+            valueKey="count"
+            label="orders"
+          />
+        </Card>
       </div>
 
       {/* Recent orders */}

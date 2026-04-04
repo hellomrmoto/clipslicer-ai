@@ -1,5 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
+import { getWeeklyRevenue, getWeeklySignups } from '@/lib/analytics'
 import Card from '@/components/ui/Card'
+import { AreaChartWidget, LineChartWidget } from '@/components/ui/SimpleChart'
 import Link from 'next/link'
 
 export default async function AdminOverviewPage() {
@@ -10,12 +12,18 @@ export default async function AdminOverviewPage() {
     { count: disputedOrders },
     { count: totalVendors },
     { count: totalBuyers },
+    weeklyRevenue,
+    weeklySignups,
   ] = await Promise.all([
     supabase.from('orders').select('*', { count: 'exact', head: true }),
     supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'disputed'),
     supabase.from('vendor_profiles').select('*', { count: 'exact', head: true }),
     supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'buyer'),
+    getWeeklyRevenue(supabase),
+    getWeeklySignups(supabase),
   ])
+
+  const totalRevenue = weeklyRevenue.reduce((s, w) => s + w.tokens, 0)
 
   return (
     <div className="max-w-4xl space-y-6">
@@ -40,6 +48,37 @@ export default async function AdminOverviewPage() {
           </Link>
         </div>
       ) : null}
+
+      {/* Analytics charts */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-gray-900">Platform Revenue</h2>
+            <span className="text-xs text-gray-400">{totalRevenue} tokens last 8 wks</span>
+          </div>
+          <AreaChartWidget
+            data={weeklyRevenue}
+            xKey="week"
+            valueKey="tokens"
+            color="#dc2626"
+            label="tokens"
+          />
+        </Card>
+
+        <Card className="p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="font-semibold text-gray-900">New Users</h2>
+            <span className="text-xs text-gray-400">last 8 weeks</span>
+          </div>
+          <LineChartWidget
+            data={weeklySignups}
+            xKey="week"
+            valueKey="count"
+            color="#7c3aed"
+            label="users"
+          />
+        </Card>
+      </div>
     </div>
   )
 }

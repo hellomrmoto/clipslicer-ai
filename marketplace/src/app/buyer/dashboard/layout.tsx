@@ -46,7 +46,7 @@ export default async function BuyerDashboardLayout({ children }: { children: Rea
 
         <div className="flex flex-1 overflow-hidden">
           <main className="flex-1 p-6 overflow-auto">{children}</main>
-          <SideDrawer role="buyer" />
+          <SideDrawer role="buyer" userId={user.id} />
         </div>
       </div>
     </div>

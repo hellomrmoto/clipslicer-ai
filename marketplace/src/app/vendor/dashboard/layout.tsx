@@ -7,6 +7,7 @@ const navLinks = [
   { href: '/vendor/dashboard', label: 'Overview' },
   { href: '/vendor/dashboard/orders', label: 'Orders' },
   { href: '/vendor/dashboard/listings', label: 'My Menu' },
+  { href: '/vendor/dashboard/wallet', label: 'Wallet' },
   { href: '/vendor/dashboard/profile', label: 'Profile' },
 ]
 
@@ -55,7 +56,7 @@ export default async function VendorDashboardLayout({ children }: { children: Re
         {/* Main content + eye-frame side drawer */}
         <div className="flex flex-1 overflow-hidden">
           <main className="flex-1 p-6 overflow-auto">{children}</main>
-          <SideDrawer role="vendor" />
+          <SideDrawer role="vendor" userId={user.id} />
         </div>
       </div>
     </div>
