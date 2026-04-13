@@ -2,14 +2,17 @@ from flask import Flask, request, jsonify, render_template, send_from_directory
 import uuid
 import os
 from pytube import YouTube
+from memory import init_db, create_job, get_job, update_job, list_jobs
 
 app = Flask(__name__, template_folder="templates")
 
-video_jobs = {}
+init_db()
+
 
 @app.route('/')
 def home():
     return render_template("index.html")
+
 
 @app.route('/upload', methods=['POST'])
 def upload():
@@ -19,11 +22,7 @@ def upload():
         return jsonify({'error': 'Missing YouTube URL'}), 400
 
     job_id = str(uuid.uuid4())
-    video_jobs[job_id] = {
-        'status': 'processing',
-        'youtube_url': youtube_url,
-        'clips': []
-    }
+    create_job(job_id, youtube_url)
 
     try:
         yt = YouTube(youtube_url)
@@ -41,28 +40,36 @@ def upload():
         output_dir = f"clips/{job_id}"
         os.makedirs(output_dir, exist_ok=True)
 
+        clips = []
         for i, (start, end) in enumerate(clip_segments):
             output_path = f"{output_dir}/clip_{i + 1}.mp4"
-            video_jobs[job_id]['clips'].append({
+            clips.append({
                 'clip': output_path,
                 'start': start,
                 'end': end,
                 'note': 'Processing skipped due to unavailable moviepy'
             })
 
-        video_jobs[job_id]['status'] = 'completed'
+        update_job(job_id, 'completed', clips=clips)
     except Exception as e:
-        video_jobs[job_id]['status'] = 'error'
-        video_jobs[job_id]['error'] = str(e)
+        update_job(job_id, 'error', error=str(e))
 
     return jsonify({'job_id': job_id}), 200
 
+
 @app.route('/status/<job_id>', methods=['GET'])
 def check_status(job_id):
-    job = video_jobs.get(job_id)
+    job = get_job(job_id)
     if not job:
         return jsonify({'error': 'Job not found'}), 404
     return jsonify(job)
+
+
+@app.route('/history', methods=['GET'])
+def history():
+    jobs = list_jobs()
+    return jsonify(jobs)
+
 
 @app.route('/clips/<job_id>/<filename>')
 def serve_clip(job_id, filename):

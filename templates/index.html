@@ -10,6 +10,22 @@
   <div id="status"></div>
   <ul id="clipsList"></ul>
 
+  <hr>
+  <h2>Job History</h2>
+  <button onclick="loadHistory()">Refresh History</button>
+  <table id="historyTable" border="1" cellpadding="6" style="border-collapse:collapse;margin-top:8px;">
+    <thead>
+      <tr>
+        <th>Job ID</th>
+        <th>YouTube URL</th>
+        <th>Status</th>
+        <th>Clips</th>
+        <th>Created At</th>
+      </tr>
+    </thead>
+    <tbody id="historyBody"></tbody>
+  </table>
+
   <script>
     document.getElementById('uploadForm').addEventListener('submit', async function(e) {
       e.preventDefault();
@@ -36,12 +52,34 @@
             li.innerText = `${c.clip} (${c.note})`;
             clipsList.appendChild(li);
           });
+          loadHistory();
         } else if (data.status === 'error') {
           clearInterval(interval);
           statusDiv.innerText = 'Error: ' + data.error;
+          loadHistory();
         }
       }, 3000);
     });
+
+    async function loadHistory() {
+      const res = await fetch('/history');
+      const jobs = await res.json();
+      const tbody = document.getElementById('historyBody');
+      tbody.innerHTML = '';
+      jobs.forEach(job => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td style="font-size:0.8em">${job.id}</td>
+          <td><a href="${job.youtube_url}" target="_blank">${job.youtube_url}</a></td>
+          <td>${job.status}</td>
+          <td>${job.clips.length}</td>
+          <td>${job.created_at}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    loadHistory();
   </script>
 </body>
 </html>
