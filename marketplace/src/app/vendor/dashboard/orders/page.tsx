@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server'
-import Card from '@/components/ui/Card'
 import VendorOrderActions from './VendorOrderActions'
 
 export default async function VendorOrdersPage() {
@@ -16,28 +15,32 @@ export default async function VendorOrdersPage() {
   const completed = orders?.filter(o => ['delivered', 'cancelled', 'refunded', 'disputed'].includes(o.status)) ?? []
 
   return (
-    <div className="max-w-3xl space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Orders</h1>
+    <div className="max-w-3xl space-y-8">
+      <h1 className="text-3xl font-black text-white uppercase tracking-tight">Orders</h1>
 
       <section>
-        <h2 className="font-semibold text-gray-700 mb-3">Active ({pending.length})</h2>
+        <p className="text-xs font-black text-gray-600 uppercase tracking-widest mb-4">Active ({pending.length})</p>
         {pending.length > 0 ? (
           <div className="flex flex-col gap-4">
             {pending.map(order => <OrderCard key={order.id} order={order} active />)}
           </div>
         ) : (
-          <Card className="p-8 text-center text-gray-400 text-sm">No active orders</Card>
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-10 text-center text-gray-600 text-sm">
+            No active orders
+          </div>
         )}
       </section>
 
       <section>
-        <h2 className="font-semibold text-gray-700 mb-3">History</h2>
+        <p className="text-xs font-black text-gray-600 uppercase tracking-widest mb-4">History</p>
         {completed.length > 0 ? (
           <div className="flex flex-col gap-3">
             {completed.map(order => <OrderCard key={order.id} order={order} active={false} />)}
           </div>
         ) : (
-          <Card className="p-8 text-center text-gray-400 text-sm">No completed orders yet</Card>
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8 text-center text-gray-600 text-sm">
+            No completed orders yet
+          </div>
         )}
       </section>
     </div>
@@ -46,49 +49,48 @@ export default async function VendorOrdersPage() {
 
 function OrderCard({ order, active }: { order: any; active: boolean }) {
   return (
-    <Card className="p-5">
-      <div className="flex items-start justify-between mb-3">
+    <div className="bg-gray-900 border border-gray-800 rounded-2xl p-5">
+      <div className="flex items-start justify-between mb-4">
         <div>
-          <p className="font-semibold text-gray-900">{order.food_listings?.title}</p>
-          <p className="text-sm text-gray-500">
-            Buyer: {order.profiles?.full_name}
+          <p className="font-black text-white uppercase tracking-tight">{order.food_listings?.title}</p>
+          <p className="text-sm text-gray-500 mt-0.5">
+            {order.profiles?.full_name}
             {order.profiles?.phone && ` · ${order.profiles.phone}`}
           </p>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-gray-700 mt-1">
             {new Date(order.created_at).toLocaleString()} · {order.fulfillment_type} · {order.payment_method}
           </p>
           {order.delivery_address && (
-            <p className="text-xs text-gray-500 mt-1">📍 {order.delivery_address}</p>
+            <p className="text-xs text-gray-600 mt-1">📍 {order.delivery_address}</p>
           )}
           {order.special_instructions && (
             <p className="text-xs text-gray-600 mt-1 italic">"{order.special_instructions}"</p>
           )}
         </div>
         <div className="text-right">
-          <p className="font-bold text-gray-900">{order.vendor_payout_tokens} tokens</p>
-          <p className="text-xs text-gray-400">after platform fee</p>
+          <p className="font-black text-yellow-400 text-lg">{order.vendor_payout_tokens}</p>
+          <p className="text-xs text-gray-600">tokens after fee</p>
           <StatusBadge status={order.status} />
         </div>
       </div>
-
       {active && <VendorOrderActions order={order} />}
-    </Card>
+    </div>
   )
 }
 
 function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, string> = {
-    pending: 'bg-yellow-100 text-yellow-700',
-    accepted: 'bg-blue-100 text-blue-700',
-    preparing: 'bg-blue-100 text-blue-700',
-    ready: 'bg-purple-100 text-purple-700',
-    delivered: 'bg-green-100 text-green-700',
-    disputed: 'bg-red-100 text-red-700',
-    cancelled: 'bg-gray-100 text-gray-500',
-    refunded: 'bg-gray-100 text-gray-500',
+    pending: 'bg-yellow-900 text-yellow-400',
+    accepted: 'bg-blue-900 text-blue-400',
+    preparing: 'bg-blue-900 text-blue-400',
+    ready: 'bg-purple-900 text-purple-400',
+    delivered: 'bg-green-900 text-green-400',
+    disputed: 'bg-red-900 text-red-400',
+    cancelled: 'bg-gray-800 text-gray-500',
+    refunded: 'bg-gray-800 text-gray-500',
   }
   return (
-    <span className={`inline-block mt-1 text-xs px-2 py-1 rounded-full font-medium capitalize ${colors[status] ?? 'bg-gray-100 text-gray-500'}`}>
+    <span className={`inline-block mt-1 text-xs px-2 py-0.5 rounded-full font-black capitalize uppercase tracking-wide ${colors[status] ?? 'bg-gray-800 text-gray-500'}`}>
       {status}
     </span>
   )

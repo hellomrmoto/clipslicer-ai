@@ -2,9 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Button from '@/components/ui/Button'
-import Card from '@/components/ui/Card'
-import Input from '@/components/ui/Input'
 import Link from 'next/link'
 
 const PLATFORM_FEE_PERCENT = 10
@@ -32,16 +29,17 @@ export default function OrderForm({ listing, user, walletBalance }: {
 
   if (!user) {
     return (
-      <Card className="p-6 text-center space-y-4">
-        <p className="text-gray-600">Sign in to place an order</p>
+      <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 text-center space-y-4">
+        <p className="text-xs font-bold text-gray-600 uppercase tracking-widest mb-2">Place your order</p>
+        <p className="text-gray-400 text-sm">Sign in to order from this cook</p>
         <Link href="/auth/buyer/login"
-          className="block bg-orange-600 text-white px-6 py-3 rounded-xl text-sm font-medium hover:bg-orange-700">
+          className="block bg-red-600 text-white px-6 py-3 rounded-xl text-sm font-black uppercase tracking-widest hover:bg-red-700 transition-colors">
           Sign In
         </Link>
-        <Link href="/auth/buyer/register" className="block text-sm text-orange-600 hover:underline">
+        <Link href="/auth/buyer/register" className="block text-sm text-gray-500 hover:text-white transition-colors">
           Create account
         </Link>
-      </Card>
+      </div>
     )
   }
 
@@ -75,32 +73,32 @@ export default function OrderForm({ listing, user, walletBalance }: {
   }
 
   return (
-    <Card className="p-6 space-y-5 sticky top-24">
-      <h2 className="font-semibold text-gray-900 text-lg">Place Order</h2>
+    <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 space-y-5 sticky top-24">
+      <p className="text-xs font-bold text-gray-600 uppercase tracking-widest">Place your order</p>
 
       {/* Quantity */}
-      <div className="flex items-center gap-3">
-        <label className="text-sm font-medium text-gray-700">Quantity</label>
-        <div className="flex items-center gap-2 ml-auto">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Quantity</span>
+        <div className="flex items-center gap-3">
           <button onClick={() => setQuantity(q => Math.max(1, q - 1))}
-            className="w-8 h-8 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium">−</button>
-          <span className="w-8 text-center font-medium">{quantity}</span>
+            className="w-8 h-8 rounded-full border border-gray-700 text-gray-300 hover:bg-gray-800 font-black text-lg flex items-center justify-center transition-colors">−</button>
+          <span className="w-8 text-center font-black text-white">{quantity}</span>
           <button onClick={() => setQuantity(q => q + 1)}
-            className="w-8 h-8 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium">+</button>
+            className="w-8 h-8 rounded-full border border-gray-700 text-gray-300 hover:bg-gray-800 font-black text-lg flex items-center justify-center transition-colors">+</button>
         </div>
       </div>
 
       {/* Fulfillment */}
       {listing.offers_pickup && listing.offers_delivery && (
         <div>
-          <label className="text-sm font-medium text-gray-700 block mb-2">Fulfillment</label>
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Fulfillment</p>
           <div className="flex gap-2">
             {(['pickup', 'delivery'] as const).map(type => (
               <button key={type} onClick={() => setFulfillment(type)}
-                className={`flex-1 py-2 rounded-xl border text-sm font-medium capitalize transition-colors ${
+                className={`flex-1 py-2.5 rounded-xl border text-xs font-black capitalize uppercase tracking-wide transition-colors ${
                   fulfillment === type
-                    ? 'bg-orange-600 text-white border-orange-600'
-                    : 'border-gray-300 text-gray-700 hover:border-orange-400'
+                    ? 'bg-red-600 text-white border-red-600'
+                    : 'border-gray-700 text-gray-400 hover:border-gray-600 hover:text-white'
                 }`}>
                 {type === 'pickup' ? '🏠 Pickup' : '🚗 Delivery'}
               </button>
@@ -110,72 +108,85 @@ export default function OrderForm({ listing, user, walletBalance }: {
       )}
 
       {fulfillment === 'delivery' && (
-        <Input id="address" label="Delivery Address" placeholder="123 Main St, City, State"
-          value={deliveryAddress} onChange={e => setDeliveryAddress(e.target.value)} required />
+        <div>
+          <label className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1.5">Delivery Address</label>
+          <input
+            placeholder="123 Main St, City, State"
+            value={deliveryAddress}
+            onChange={e => setDeliveryAddress(e.target.value)}
+            className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+          />
+        </div>
       )}
 
-      <div className="flex flex-col gap-1">
-        <label htmlFor="instructions" className="text-sm font-medium text-gray-700">Special Instructions</label>
-        <textarea id="instructions" rows={2} value={specialInstructions}
+      <div>
+        <label className="text-xs font-bold text-gray-400 uppercase tracking-widest block mb-1.5">Special Instructions</label>
+        <textarea rows={2} value={specialInstructions}
           onChange={e => setSpecialInstructions(e.target.value)}
           placeholder="Allergies, preferences..."
-          className="block w-full rounded-xl border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent" />
+          className="block w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500 resize-none" />
       </div>
 
-      {/* Payment method */}
+      {/* Payment */}
       <div>
-        <label className="text-sm font-medium text-gray-700 block mb-2">Payment</label>
+        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Payment</p>
         <div className="flex gap-2">
           {(['tokens', 'cash'] as const).map(method => (
             <button key={method} onClick={() => setPaymentMethod(method)}
-              className={`flex-1 py-2 rounded-xl border text-sm font-medium transition-colors ${
+              className={`flex-1 py-2.5 rounded-xl border text-xs font-black uppercase tracking-wide transition-colors ${
                 paymentMethod === method
-                  ? 'bg-orange-600 text-white border-orange-600'
-                  : 'border-gray-300 text-gray-700 hover:border-orange-400'
+                  ? 'bg-red-600 text-white border-red-600'
+                  : 'border-gray-700 text-gray-400 hover:border-gray-600 hover:text-white'
               }`}>
-              {method === 'tokens' ? `🪙 Tokens (${walletBalance})` : '💵 Cash'}
+              {method === 'tokens' ? `Tokens (${walletBalance})` : 'Cash'}
             </button>
           ))}
         </div>
         {paymentMethod === 'tokens' && !canAfford && (
-          <p className="text-xs text-red-600 mt-1">
+          <p className="text-xs text-red-500 mt-2">
             Not enough tokens.{' '}
-            <Link href="/buyer/dashboard/wallet" className="underline">Buy more</Link>
+            <Link href="/buyer/dashboard/wallet" className="underline hover:text-red-400">Buy more</Link>
           </p>
         )}
       </div>
 
-      {/* Price breakdown */}
-      <div className="bg-gray-50 rounded-xl p-4 space-y-2 text-sm">
-        <div className="flex justify-between text-gray-600">
-          <span>{listing.price_tokens} tokens × {quantity}</span>
+      {/* Breakdown */}
+      <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 space-y-2 text-sm">
+        <div className="flex justify-between text-gray-500">
+          <span>{listing.price_tokens} × {quantity}</span>
           <span>{subtotal} tokens</span>
         </div>
-        <div className="flex justify-between text-gray-600">
+        <div className="flex justify-between text-gray-500">
           <span>Platform fee (10%)</span>
           <span>{platformFee} tokens</span>
         </div>
-        <div className="flex justify-between font-bold text-gray-900 pt-2 border-t border-gray-200">
-          <span>Total</span>
-          <span>{paymentMethod === 'cash' ? `$${subtotal} cash` : `${total} tokens`}</span>
+        <div className="flex justify-between font-black text-white pt-2 border-t border-gray-700">
+          <span className="uppercase tracking-wide">Total</span>
+          <span className="text-yellow-400">
+            {paymentMethod === 'cash' ? `$${subtotal} cash` : `${total} tokens`}
+          </span>
         </div>
       </div>
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-red-500">{error}</p>}
 
-      <Button
+      <button
         onClick={handleOrder}
-        loading={loading}
-        disabled={paymentMethod === 'tokens' && !canAfford}
-        size="lg"
-        className="w-full"
+        disabled={loading || (paymentMethod === 'tokens' && !canAfford)}
+        className="w-full bg-red-600 text-white py-4 rounded-xl text-sm font-black uppercase tracking-widest hover:bg-red-700 disabled:bg-gray-800 disabled:text-gray-600 transition-colors flex items-center justify-center gap-2"
       >
-        {paymentMethod === 'cash' ? 'Place Order (Pay Cash on Pickup)' : 'Place Order & Pay with Tokens'}
-      </Button>
+        {loading && (
+          <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+        )}
+        {paymentMethod === 'cash' ? 'Order — Pay Cash on Pickup' : 'Order & Pay with Tokens'}
+      </button>
 
-      <p className="text-xs text-gray-400 text-center">
+      <p className="text-xs text-gray-700 text-center">
         🔒 Tokens held in escrow until delivery is confirmed
       </p>
-    </Card>
+    </div>
   )
 }

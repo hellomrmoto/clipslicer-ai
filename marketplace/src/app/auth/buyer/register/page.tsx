@@ -4,9 +4,6 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
-import Card from '@/components/ui/Card'
 
 export default function BuyerRegisterPage() {
   const router = useRouter()
@@ -30,12 +27,7 @@ export default function BuyerRegisterPage() {
     })
 
     const data = await res.json()
-
-    if (!res.ok) {
-      setError(data.error || 'Something went wrong')
-      setLoading(false)
-      return
-    }
+    if (!res.ok) { setError(data.error || 'Something went wrong'); setLoading(false); return }
 
     const supabase = createClient()
     await supabase.auth.signInWithPassword({ email: form.email, password: form.password })
@@ -43,42 +35,49 @@ export default function BuyerRegisterPage() {
     router.refresh()
   }
 
+  const fields = [
+    { key: 'full_name', label: 'Full Name', type: 'text', placeholder: 'Alex Johnson' },
+    { key: 'phone', label: 'Phone (optional)', type: 'tel', placeholder: '+1 555 000 0000' },
+    { key: 'email', label: 'Email', type: 'email', placeholder: 'you@example.com' },
+    { key: 'password', label: 'Password', type: 'password', placeholder: 'Min 8 characters' },
+  ]
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12">
-      <Card className="w-full max-w-sm p-8">
-        <div className="mb-6 text-center">
-          <Link href="/" className="text-2xl font-bold text-orange-600">FoodToken</Link>
-          <p className="mt-1 text-sm text-gray-500">Create your buyer account</p>
+    <div className="min-h-screen bg-[#080808] flex items-center justify-center px-4 py-12">
+      <div className="w-full max-w-sm">
+        <div className="text-center mb-10">
+          <Link href="/" className="text-3xl font-black text-white tracking-tight">PLATE</Link>
+          <p className="mt-2 text-xs font-bold text-gray-600 uppercase tracking-widest">Create your account</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <Input id="full_name" label="Full Name" placeholder="Alex Johnson"
-            value={form.full_name} onChange={e => update('full_name', e.target.value)} required />
+        <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            {fields.map(({ key, label, type, placeholder }) => (
+              <div key={key}>
+                <label className="text-xs font-bold text-gray-500 uppercase tracking-widest block mb-1.5">{label}</label>
+                <input type={type} placeholder={placeholder} value={form[key as keyof typeof form]}
+                  onChange={e => update(key, e.target.value)}
+                  minLength={key === 'password' ? 8 : undefined}
+                  required={key !== 'phone'}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500" />
+              </div>
+            ))}
 
-          <Input id="phone" label="Phone (optional)" type="tel" placeholder="+1 555 000 0000"
-            value={form.phone} onChange={e => update('phone', e.target.value)} />
+            {error && <p className="text-sm text-red-500">{error}</p>}
 
-          <Input id="email" label="Email" type="email" placeholder="you@example.com"
-            value={form.email} onChange={e => update('email', e.target.value)} required />
+            <button type="submit" disabled={loading}
+              className="bg-red-600 text-white py-3.5 rounded-xl text-sm font-black uppercase tracking-widest hover:bg-red-700 disabled:bg-gray-800 disabled:text-gray-600 transition-colors flex items-center justify-center gap-2 mt-2">
+              {loading && <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>}
+              Create Account
+            </button>
+          </form>
+        </div>
 
-          <Input id="password" label="Password" type="password" placeholder="Min 8 characters"
-            value={form.password} onChange={e => update('password', e.target.value)}
-            minLength={8} required />
-
-          {error && <p className="text-sm text-red-600">{error}</p>}
-
-          <Button type="submit" loading={loading} size="lg" className="w-full mt-2">
-            Create Account
-          </Button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-gray-500">
+        <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{' '}
-          <Link href="/auth/buyer/login" className="text-orange-600 font-medium hover:underline">
-            Sign in
-          </Link>
+          <Link href="/auth/buyer/login" className="text-white font-bold hover:text-red-400 transition-colors">Sign in</Link>
         </p>
-      </Card>
+      </div>
     </div>
   )
 }
